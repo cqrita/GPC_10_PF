@@ -11,7 +11,7 @@ void User::Start()
 void User::Update()
 {
     this->checkInput();
-    this->dummy.Update();
+    this->player->Update();
     {
         
     }

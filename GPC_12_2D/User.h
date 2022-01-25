@@ -1,11 +1,13 @@
 #pragma once
-#include "Dummy.h"
+#include "Player.h"
 class User 
 {
 public:
-    Dummy dummy;
+    Player* player=nullptr;
     void  Start();
     void Update();
     void    End();
     void checkInput();
+private:
+    Engine::Rendering::Camera camera;
 };

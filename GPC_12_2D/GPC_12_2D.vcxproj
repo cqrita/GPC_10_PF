@@ -21,7 +21,10 @@
   <ItemGroup>
     <ClCompile Include="Demo.cpp" />
     <ClCompile Include="Dummy.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Initialize.cpp" />
+    <ClCompile Include="Missile.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="Test2.cpp" />
     <ClCompile Include="User.cpp" />
@@ -42,7 +45,10 @@
     <ClInclude Include="Engine\Time.h" />
     <ClInclude Include="Engine\Vector.h" />
     <ClInclude Include="Demo.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Manager.h" />
+    <ClInclude Include="Missile.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Test.h" />

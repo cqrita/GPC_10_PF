@@ -1,10 +1,10 @@
 #include "Demo.h"
-
-#include "Test.h"
+#include "User.h"
+#include "Field.h"
 
 void Demo::Start()
 {
-    Now = new Test;
+    Now = new Field;
 
     Now->Start();
 }

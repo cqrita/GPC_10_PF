@@ -22,6 +22,7 @@
     <ClCompile Include="Demo.cpp" />
     <ClCompile Include="Dummy.cpp" />
     <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="Field.cpp" />
     <ClCompile Include="Initialize.cpp" />
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -31,8 +32,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="Agent.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Dummy.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Engine\Circle.h" />
     <ClInclude Include="Engine\Game.h" />
     <ClInclude Include="Engine\Initialize.h" />
@@ -47,6 +50,7 @@
     <ClInclude Include="Demo.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="Field.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="Player.h" />

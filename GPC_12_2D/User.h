@@ -8,6 +8,8 @@ public:
     void Update();
     void    End();
     void checkInput();
+    void moveInput();
+    void attackInput();
 private:
     Engine::Rendering::Camera camera;
 };

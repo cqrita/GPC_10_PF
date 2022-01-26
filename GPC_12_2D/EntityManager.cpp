@@ -17,15 +17,15 @@ void EntityManager::End()
 
 void EntityManager::entCollision()
 {
-	for (int i = 0; i < players.size(); i++)
+	for (Agent* agent:agents)
 	{
-		for (int j = 0; j < players.size(); j++)
+		for (Player* player : players)
 		{
-			if (i == j) continue;
+			if (agent == player) continue;
 			
-			for (Missile* missile: players[j]->missiles)
+			for (Missile* missile: player->missiles)
 			{
-				if (players[i]->body.Collide(missile->body))
+				if (agent->body.Collide(missile->body))
 				{
 
 				}

@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Scene.h"
 #include "EntityManager.h"
+#include "User.h"
 
 class Field final : public Scene
 {
@@ -14,8 +15,12 @@ public:
     void       End() final override;
 
 private:
-    Engine::Rendering::Image::Component background;
+   
 
+
+    Engine::Rendering::Image::Component background;
+    User* user = nullptr;
     EntityManager* entityManager = nullptr;
     Player* player = nullptr;
+    Engine::Rendering::Camera camera;
 };

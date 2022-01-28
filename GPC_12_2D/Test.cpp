@@ -9,6 +9,14 @@
 void Test::Start()
 {
     {
+        Free.Skin.Name     = "Image/Free";
+        Free.Skin.Length   = Vector<2>(500, 500) / 2;
+        Free.Skin.Location = Vector<2>(320, 180);
+
+        Free.Body.Radius = Free.Skin.Length[0] / 2;
+        Free.Body.Center = Point(Free.Skin.Location[0], Free.Skin.Location[1]);
+    }
+    {
         Background.Name = "Image/Celadon";
 
         Background.Length = Vector<2>(960, 703) * 4;
@@ -26,13 +34,16 @@ Scene * Test::Update()
 
     Background.Render();
 
-    
+    Physics::Component<Point> const cursor(Point((float)Input::Get::Cursor::X(), (float)Input::Get::Cursor::Y()));
+
+//  if(Free.Body.Collide(cursor) and Input::Get::Key::Press(VK_LBUTTON))
     
     Free.Skin.Render();
 
     Player->Update();
 
-    return nullptr;
+    if(Input::Get::Key::Press(VK_RBUTTON)) return new Test2;
+    else                                   return nullptr;
 }
 
 void Test::End()

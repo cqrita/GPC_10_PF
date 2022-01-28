@@ -13,4 +13,7 @@ public:
     void Update();
     void    End();
     void entCollision();
+    void misCollision();
+    void addAgent(Agent* agent);
+    void addPlayer(Player* player);
 };

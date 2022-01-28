@@ -12,20 +12,29 @@ public:
     void  Start() final override;
     void Update() final override;
     void    End() final override;
+    void misCollide() final override;
+    void entCollide() final override;
     void createMissile();
     void changeMoveState(Dir direction, const char* state);
     void moveUpdate();
+
 public:
     std::vector<Missile*> missiles;
     Engine::Rendering::Animation::Component skin;
-private:   
     Engine::Rendering::Image::Component     box;
+
+private:   
+    
     enum class MoveState
     {
         idle,
-        move,
+        walk,
         run
     } moveState;
+
     Dir direction;
+    Dir preDirection;
     float speed;
+    float attackspeed;
+    bool attack = false;
 };

@@ -35,10 +35,10 @@ void Dummy::Update()
 
         if
         (
-            Input::Get::Key::Press('A') or
-            Input::Get::Key::Press('D') or
-            Input::Get::Key::Press('W') or
-            Input::Get::Key::Press('S')
+            Input::Get::Key::Down('A') or
+            Input::Get::Key::Down('D') or
+            Input::Get::Key::Down('W') or
+            Input::Get::Key::Down('S')
         )
         {
             if(Input::Get::Key::Press('E'))

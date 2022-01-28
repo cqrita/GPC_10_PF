@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <array>
 #include "Engine/Vector.h"
 enum class Dir : int
 {
@@ -14,20 +15,20 @@ enum class Dir : int
 	I
 };
 
-std::map<Dir, Vector<2>> dMap1
+static std::map<Dir, Vector<2>> dMap1
 {
-	{Dir::N,Normalize(Vector<2>(0,1))},
-	{Dir::NE,Normalize(Vector<2>(1,1))},
-	{Dir::E,Normalize(Vector<2>(1,0))},
-	{Dir::SE,Normalize(Vector<2>(1,-1))},
-	{Dir::S,Normalize(Vector<2>(0,-1))},
-	{Dir::SW,Normalize(Vector<2>(-1,-1))},
-	{Dir::W,Normalize(Vector<2>(-1,0))},
-	{Dir::NW,Normalize(Vector<2>(-1,1))},
-	{Dir::I,Normalize(Vector<2>(0,0))}
+	{Dir::N,Vector<2>(0,1)},
+	{Dir::NE,Vector<2>(1,1)},
+	{Dir::E,Vector<2>(1,0)},
+	{Dir::SE,Vector<2>(1,-1)},
+	{Dir::S,Vector<2>(0,-1)},
+	{Dir::SW,Vector<2>(-1,-1)},
+	{Dir::W,Vector<2>(-1,0)},
+	{Dir::NW,Vector<2>(-1,1)},
+	{Dir::I,Vector<2>(0,0)}
 };
 
-std::map<Vector<2>,Dir> dMap2
+static std::map<std::array<float,2>, Dir> dMap2
 {
 	{{0,1},Dir::N},
 	{{1,1},Dir::NE},
@@ -40,51 +41,18 @@ std::map<Vector<2>,Dir> dMap2
 	{{0,0},Dir::I},
 };
 
-Dir checkDir(Vector<2> v)
+static std::map<Dir, float> dMap3
 {
-	if (v[0] > 0)
-	{
-		if (v[1] > 0)
-		{
+	{Dir::N,90.0f},
+	{Dir::NE,45.0f},
+	{Dir::E,0.0f},
+	{Dir::SE,315.0f},
+	{Dir::S,270.0f},
+	{Dir::SW,225.0f},
+	{Dir::W,180.0f},
+	{Dir::NW,135.0f},
+	{Dir::I,0.0f}
+};
 
-		}
-		else if (v[1] < 0)
-		{
 
-		}
-		else
-		{
 
-		}
-	}
-	else if (v[0] < 0)
-	{
-		if (v[1] > 0)
-		{
-
-		}
-		else if (v[1] < 0)
-		{
-
-		}
-		else
-		{
-
-		}
-	}
-	else
-	{
-		if (v[1] > 0)
-		{
-
-		}
-		else if (v[1] < 0)
-		{
-
-		}
-		else
-		{
-
-		}
-	}
-}

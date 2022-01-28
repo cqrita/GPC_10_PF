@@ -9,5 +9,4 @@ public:
 
 private:
     class Scene * Now = nullptr;
-    class User* user = nullptr;
 };

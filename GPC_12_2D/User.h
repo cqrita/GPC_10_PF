@@ -11,7 +11,12 @@ public:
     void moveInput();
     void attackInput();
     void getPlayer(Player* player);
+    float getMouseX();
+    float getMouseY();
+public:
+    Engine::Rendering::Camera camera;
 private:
     Player* player = nullptr;
-    Engine::Rendering::Camera camera;
+    
 };
+

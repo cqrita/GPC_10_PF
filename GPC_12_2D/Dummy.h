@@ -21,5 +21,5 @@ private:
 
     Engine::Physics::Component<Quadrangle>  Body;
 
-    float Speed;
+    float Speed=0;
 };

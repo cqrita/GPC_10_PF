@@ -1,17 +1,25 @@
 #include "User.h"
 #include "Engine/Input.h"
 #include <iostream>
-
+#include <Windows.h>
+#include "Global.h"
 
 void User::Start()
 {    
-    this->camera.Sight = Vector<2>(1280, 720);   
+    this->camera.Sight = Vector<2>(camWidth, camHeight)*2;   
 }
 
 void User::Update()
 {
     this->checkInput();
-    this->camera.Location = player->skin.Location;
+    if (player->skin.Location[0] > (camWidth - bkWidth) && player->skin.Location[0] < (bkWidth - camWidth))
+    {
+        this->camera.Location[0] = player->skin.Location[0];
+    }
+    if (player->skin.Location[1] > (camHeight - bkHeight) && player->skin.Location[1] < (bkHeight - camHeight))
+    {
+        this->camera.Location[1] = player->skin.Location[1];
+    }
     this->camera.Set();
     this->player->Update();
     
@@ -50,20 +58,14 @@ void User::moveInput()
         }
     }
 
-    if (
-        not Input::Get::Key::Press('A') and
-        not Input::Get::Key::Press('D') and
-        not Input::Get::Key::Press('W') and
-        not Input::Get::Key::Press('S')
-        )
-    {
-        state = "Idle";
-    }
-
     if (Input::Get::Key::Press('A')) direction += { -1, 0 };
     if (Input::Get::Key::Press('D')) direction += { +1, 0 };
     if (Input::Get::Key::Press('W')) direction += {  0, +1 };
     if (Input::Get::Key::Press('S')) direction += {  0, -1 };
+    if (direction[0] == 0 && direction[1] == 0)
+    {
+        state = "Idle";
+    }
     std::array<float, 2>arr = { direction[0], direction[1] };
     player->changeMoveState(dMap2[arr], state);
 }
@@ -71,14 +73,24 @@ void User::moveInput()
 void User::attackInput()
 {
     using namespace Engine;
-    if (Input::Get::Key::Press('F'))
+    if (Input::Get::Key::Press(VK_LBUTTON))
     {
-        player->createMissile();
+        player->createMissile(getMouseX(),getMouseY());
     }
 }
 
 void User::getPlayer(Player* player)
 {
     this->player = player;
+}
+
+float User::getMouseX()
+{
+    return camera.Location[0] + Input::Get::Cursor::X() - camWidth;
+}
+
+float User::getMouseY()
+{
+    return camera.Location[1] + camHeight - Input::Get::Cursor::Y();
 }
 

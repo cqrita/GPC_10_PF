@@ -16,4 +16,5 @@ public:
     void misCollision();
     void addAgent(Agent* agent);
     void addPlayer(Player* player);
+    void checkState();
 };

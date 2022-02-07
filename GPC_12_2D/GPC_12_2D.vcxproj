@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Demo.cpp" />
     <ClCompile Include="Dummy.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Initialize.cpp" />
@@ -51,6 +52,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Field.h" />
+    <ClInclude Include="Global.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="Player.h" />

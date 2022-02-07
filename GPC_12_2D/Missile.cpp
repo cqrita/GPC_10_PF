@@ -31,6 +31,10 @@ void Missile::Update()
 {
 	this->moveUpdate();
 	duration += Engine::Time::Get::Delta();
+	if (distance > 500)
+	{
+		state = 0;
+	}
 	{
 		body.Center.x = skin.Location[0];
 		body.Center.y = skin.Location[1];
@@ -51,13 +55,35 @@ void Missile::End()
 
 void Missile::moveUpdate()
 {	
-	Vector<2> direction = dMap1[this->direction];
-	
-	skin.Location += Normalize(direction) * speed * Engine::Time::Get::Delta();
+	float const radian = angle * (3.14159265f / 180.0f);
+	Vector<2> direction={cos(radian), sin(radian)};
+	Vector<2> dist = Normalize(direction) * speed * Engine::Time::Get::Delta();
+	distance += Length(dist);
+	skin.Location += dist;
+	if (angle >= 90 && angle <= 180)
+	{
+		skin.Angle = angle-180;
+		skin.Flipped = true;
+	}
+	else if(angle <= -90 && angle >= -180)
+	{
+		skin.Angle = angle+180;
+		skin.Flipped = true;
+	}
+	else
+	{
+	skin.Angle = angle;
+	skin.Flipped = false;
+	}
 }
 
 Missile::Missile()
 {
+}
+
+Missile::~Missile()
+{
+	
 }
 
 Missile::Missile(float angle, Vector<2> location, Dir direction)

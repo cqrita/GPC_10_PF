@@ -6,6 +6,9 @@
 #include "Engine/Physics.h"
 #include "Engine/Rendering.h"
 #include "Missile.h"
+
+static const int playerWidth = 25;
+static const int playerHeight = 33;
 class Player final : public Agent
 {
 public:
@@ -14,15 +17,17 @@ public:
     void    End() final override;
     void misCollide() final override;
     void entCollide() final override;
-    void createMissile();
+    void createMissile(float x, float y);
     void changeMoveState(Dir direction, const char* state);
     void moveUpdate();
+    int bkCollide(Vector<2> location);
+
 
 public:
     std::vector<Missile*> missiles;
     Engine::Rendering::Animation::Component skin;
     Engine::Rendering::Image::Component     box;
-
+    
 private:   
     
     enum class MoveState

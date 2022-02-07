@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "Engine/Rendering.h"
 #include "Engine/Physics.h"
 #include "Engine/Circle.h"
@@ -6,7 +7,7 @@
 #include "Scene.h"
 #include "EntityManager.h"
 #include "User.h"
-
+#include "Enemy.h"
 class Field final : public Scene
 {
 public:
@@ -17,7 +18,7 @@ public:
 private:
    
 
-
+    std::vector<Enemy*> enemies;
     Engine::Rendering::Image::Component background;
     User* user = nullptr;
     EntityManager* entityManager = nullptr;

@@ -9,6 +9,9 @@
 
 static const int playerWidth = 25;
 static const int playerHeight = 33;
+static const float attackConst = 10.0f;
+static const float runConst = 0.2f;
+
 class Player final : public Agent
 {
 public:
@@ -27,7 +30,10 @@ public:
     std::vector<Missile*> missiles;
     Engine::Rendering::Animation::Component skin;
     Engine::Rendering::Image::Component     box;
-    
+    float attackSpeed = 300.0f;
+    float runCooltime = 1.0f;
+    float walkSpeed = 300;
+    float runSpeed = 1500; 
 private:   
     
     enum class MoveState
@@ -40,6 +46,10 @@ private:
     Dir direction;
     Dir preDirection;
     float speed;
-    float attackspeed;
+    float attackDuration;
+    float runDuration;
+    float runCoolDuration;
     bool attack = false;
+    bool run = false;
+    bool runCool = false;
 };

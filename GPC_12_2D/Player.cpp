@@ -2,6 +2,7 @@
 #include "Engine/Time.h"
 #include <iostream>
 #include "Global.h"
+
 #include <cmath>
 void Player::Start()
 {
@@ -21,8 +22,11 @@ void Player::Start()
     }
     {
         speed = 0;
-        attackspeed=0.1f;
+        attackDuration = attackConst/attackSpeed;
+        runDuration = runConst;
         attack = false;
+        run = false;
+        runCool = false;
         direction = Dir::I;
     }
 }
@@ -35,16 +39,37 @@ void Player::Update()
         body.Center.y = skin.Location[1];
         box.Location = skin.Location;
     }
-    
+    std::cout << skin.Location[0] <<" " << skin.Location[1] << std::endl;
     if (attack)
     {
-        attackspeed -= Engine::Time::Get::Delta();
+        attackDuration -= Engine::Time::Get::Delta();
     }
-    if (attackspeed < 0)
+    if (attackDuration < 0)
     {
-        attackspeed = 0.1f;
+        attackDuration = attackConst / attackSpeed;
         attack = false;
     }
+
+    if(run)
+    {
+        runDuration -= Engine::Time::Get::Delta();
+    }
+    if (runDuration < 0)
+    {
+        runDuration = runConst;
+        run = false;
+    }
+    
+    if (runCool)
+    {
+        runCoolDuration -= Engine::Time::Get::Delta();
+    }
+    if (runCoolDuration < 0)
+    {
+        runCoolDuration = runCooltime;
+        runCool = false;
+    }
+
     {
         skin.Render();
         box.Render();
@@ -87,7 +112,7 @@ void Player::createMissile(float x, float y)
     {
         Vector<2> mouse = {x- skin.Location[0],y-skin.Location[1] };
         float angle = atan2f(mouse[1],mouse[0])*( 180.0f/3.14159265f);
-        std::cout << angle << std::endl;
+        
         Vector<2> location = Normalize(mouse) * 30 + skin.Location;
         Missile* missile = new Missile(angle, location, preDirection);
         missiles.push_back(missile);
@@ -98,17 +123,23 @@ void Player::createMissile(float x, float y)
 
 void Player::changeMoveState(Dir direction, const char* state)
 {
-	this->direction = direction;
-    
-    if (state == "Run")
+    if (run)
     {
         moveState = MoveState::run;
-        this->preDirection = direction;
     }
-    else if (state == "Walk")
+    else if (state == "Run"&&runCool==false)
+    {
+        run = true;
+        runCool = true;
+        moveState = MoveState::run;
+        this->preDirection = direction;
+        this->direction = direction;
+    }
+    else if (state == "Walk"||(state == "Run" && runCool == true))
     {
         moveState = MoveState::walk;
         this->preDirection = direction;
+        this->direction = direction;
     }
     else
     {
@@ -125,13 +156,13 @@ void Player::moveUpdate()
     {
         skin.Name = "Animation/Sonic/Run";
         skin.Duration = 0.25f;
-        speed = 600;
+        speed = runSpeed;
     }
     else if (moveState == MoveState::walk)
     {
         skin.Name = "Animation/Sonic/Walk";
         skin.Duration = 1.0f;
-        speed = 300;
+        speed = walkSpeed;
     }
     else
     {

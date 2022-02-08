@@ -21,7 +21,7 @@ void Missile::Start()
 
 
 	{
-		speed = 800;
+		speed = 1000;
 	}
 
 	duration = 0;

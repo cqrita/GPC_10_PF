@@ -48,7 +48,7 @@ void User::moveInput()
         Input::Get::Key::Press('S')
         )
     {
-        if (Input::Get::Key::Press('E'))
+        if (Input::Get::Key::Down(VK_SPACE))
         {
             state = "Run";
         }

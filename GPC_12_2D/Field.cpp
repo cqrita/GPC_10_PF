@@ -2,7 +2,7 @@
 #include <iostream>
 #include "Field.h"
 #include "Global.h"
-
+#include <cstdlib>
 #include "Engine/Input.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -15,7 +15,7 @@ void Field::Start()
         background.Length = Vector<2>(bkWidth, bkHeight)*2;
     }
     
-
+    std::srand(static_cast<unsigned int>(time(nullptr)));
     {
         entityManager = new EntityManager;
         user = new User;
@@ -52,16 +52,22 @@ Scene* Field::Update()
             e=enemies.erase(e);
         }
     }
-    if (Input::Get::Key::Down(VK_RBUTTON))
+    if (enemies.size()<100)
     {
-        Vector<2> enemyLoc = Vector<2>(user->camera.Location[0]+Input::Get::Cursor::X()-camWidth, user->camera.Location[1]+camHeight - Input::Get::Cursor::Y());
-        
-        Enemy* enemy = new Enemy();
+        int x = rand() % (bkWidth*2)- bkWidth;
+        int y = rand() % (bkHeight*2)-bkHeight;
+        if ((x < user->camera.Location[0] - camWidth || x > user->camera.Location[0] + camWidth) && (y<user->camera.Location[1] - camHeight || y > user->camera.Location[1] + camHeight))
+        {
+            Vector<2> enemyLoc = Vector<2>(x, y);
 
-        enemies.push_back(enemy);
-        entityManager->addAgent(enemy);
-        enemy->Start();
-        enemy->skin.Location = enemyLoc;
+            Enemy* enemy = new Enemy();
+
+            enemies.push_back(enemy);
+            entityManager->addAgent(enemy);
+            enemy->Start();
+            enemy->skin.Location = enemyLoc;
+        }
+        
     }
     
     return nullptr;

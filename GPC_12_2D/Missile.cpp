@@ -23,7 +23,9 @@ void Missile::Start()
 	{
 		speed = 1000;
 	}
-
+	{
+		EnemyHoming = false;
+	}
 	duration = 0;
 }
 
@@ -54,7 +56,13 @@ void Missile::End()
 }
 
 void Missile::moveUpdate()
-{	
+{
+	float angle = this->angle;
+	if (EnemyHoming)
+	{
+		angle=this->changeAngle();
+		EnemyHoming = false;
+	}
 	float const radian = angle * (3.14159265f / 180.0f);
 	Vector<2> direction={cos(radian), sin(radian)};
 	Vector<2> dist = Normalize(direction) * speed * Engine::Time::Get::Delta();
@@ -77,8 +85,24 @@ void Missile::moveUpdate()
 	}
 }
 
+void Missile::getEnemy(Vector<2> location)
+{
+	if (Length(skin.Location - enemy) > Length(skin.Location - location)&& Length(skin.Location - location)<400)
+	{
+		enemy = location;
+		EnemyHoming = true;
+	}	
+}
+
+float Missile::changeAngle()
+{
+	Vector<2> loc = { enemy[0] - skin.Location[0],enemy[1] - skin.Location[1] };
+	return atan2f(loc[1], loc[0]) * (180.0f / 3.14159265f);
+}
+
 Missile::Missile()
 {
+
 }
 
 Missile::~Missile()
@@ -86,11 +110,12 @@ Missile::~Missile()
 	
 }
 
-Missile::Missile(float angle, Vector<2> location, Dir direction)
+Missile::Missile(float angle, Vector<2> location, Dir direction, Vector<2> user)
 {
 	this->angle = angle;
 	this->skin.Location = location;
 	this->direction = direction;
+	this->enemy = user;
 }
 
 

@@ -21,6 +21,7 @@ void User::Update()
         this->camera.Location[1] = player->skin.Location[1];
     }
     this->camera.Set();
+    this->player->getCam(camera.Location);
     this->player->Update();
     
 }

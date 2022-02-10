@@ -34,22 +34,33 @@ void EntityManager::entCollision()
 
 void EntityManager::misCollision()
 {
-	for (Agent* agent : agents)
-	{
-		for (Player* player : players)
-		{			
-			if (agent == player) continue;
+	
+	for (Player* player : players)
+	{			
+			
 
-			for (Missile* missile : player->missiles)
-			{				
+		for (Missile* missile : player->missiles)
+		{
+			for (Agent* agent : agents)
+			{
+				if (agent == player) continue;
+				
+				
+
 				if (agent->body.Collide(missile->body))
-				{					
+				{
 					agent->misCollide();
 					missile->duration = 100;
 				}
+				if (agent->state == 1)
+				{
+					missile->getEnemy(Vector<2>(agent->body.Center.x, agent->body.Center.y));
+				}
+
 			}
 		}
 	}
+	
 }
 
 void EntityManager::addAgent(Agent* agent)

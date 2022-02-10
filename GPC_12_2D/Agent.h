@@ -12,5 +12,5 @@ public:
     virtual void entCollide() abstract;
 public:
     Engine::Physics::Component<Quadrangle> body;
-    int state = 1;
+    int state = 0;
 };

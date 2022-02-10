@@ -43,6 +43,7 @@ Scene* Field::Update()
         if ((*e)->state==1)
         {
             (*e)->moveUpdate(player->skin.Location);
+            (*e)->getCam(user->camera.Location);
             (*e)->Update();
             ++e;
         }
@@ -52,7 +53,7 @@ Scene* Field::Update()
             e=enemies.erase(e);
         }
     }
-    if (enemies.size()<100)
+    if (enemies.size()<3)
     {
         int x = rand() % (bkWidth*2)- bkWidth;
         int y = rand() % (bkHeight*2)-bkHeight;

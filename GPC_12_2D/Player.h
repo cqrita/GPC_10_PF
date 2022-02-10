@@ -24,7 +24,7 @@ public:
     void changeMoveState(Dir direction, const char* state);
     void moveUpdate();
     int bkCollide(Vector<2> location);
-
+    void getCam(Vector<2> location);
 
 public:
     std::vector<Missile*> missiles;
@@ -34,6 +34,7 @@ public:
     float runCooltime = 1.0f;
     float walkSpeed = 300;
     float runSpeed = 1500; 
+    Vector<2> cam;
 private:   
     
     enum class MoveState
@@ -45,6 +46,7 @@ private:
 
     Dir direction;
     Dir preDirection;
+    Engine::Rendering::Text::Component healthText;
     float speed;
     float attackDuration;
     float runDuration;

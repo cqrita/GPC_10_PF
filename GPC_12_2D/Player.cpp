@@ -29,6 +29,14 @@ void Player::Start()
         runCool = false;
         direction = Dir::I;
     }
+    {
+        healthText.Font.Name = "Font/arial";
+        healthText.Font.Size = 30;
+        healthText.Length= Vector<2>(50, 50) * 2;
+        healthText.Text = "test";
+        healthText.Location[0] = skin.Location[0] - cam[0] + camWidth + 30;
+        healthText.Location[1] = -skin.Location[1] + cam[1] + camHeight + 80;
+    }
 }
 
 void Player::Update()
@@ -71,6 +79,11 @@ void Player::Update()
     }
 
     {
+        healthText.Location[0] = skin.Location[0] - cam[0] + camWidth + 30;
+        healthText.Location[1] = -skin.Location[1] + cam[1] + camHeight + 80;
+    }
+    {
+        healthText.Render();
         skin.Render();
         box.Render();
     }
@@ -114,7 +127,7 @@ void Player::createMissile(float x, float y)
         float angle = atan2f(mouse[1],mouse[0])*( 180.0f/3.14159265f);
         
         Vector<2> location = Normalize(mouse) * 30 + skin.Location;
-        Missile* missile = new Missile(angle, location, preDirection);
+        Missile* missile = new Missile(angle, location, preDirection,mouse);
         missiles.push_back(missile);
         missile->Start();
         attack = true;
@@ -224,3 +237,7 @@ int Player::bkCollide(Vector<2> location)
 }
 
 
+void Player::getCam(Vector<2> location)
+{
+    cam = location;
+}

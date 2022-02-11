@@ -57,14 +57,14 @@ Scene* Field::Update()
     {
         int x = rand() % (bkWidth*2)- bkWidth;
         int y = rand() % (bkHeight*2)-bkHeight;
-        if ((x < user->camera.Location[0] - camWidth || x > user->camera.Location[0] + camWidth) && (y<user->camera.Location[1] - camHeight || y > user->camera.Location[1] + camHeight))
+        if (!((x > user->camera.Location[0] - camWidth && x < user->camera.Location[0] + camWidth) && (y > user->camera.Location[1] - camHeight && y < user->camera.Location[1] + camHeight)))
         {
             Vector<2> enemyLoc = Vector<2>(x, y);
 
             Enemy* enemy = new Enemy();
 
             enemies.push_back(enemy);
-            entityManager->addAgent(enemy);
+            entityManager->addEnemy(enemy);
             enemy->Start();
             enemy->skin.Location = enemyLoc;
         }

@@ -26,7 +26,8 @@ void EntityManager::entCollision()
 			if (agent == player) continue;			
 			if (agent->body.Collide(player->body))
 			{
-
+				player->entCollide(agent);
+				agent->entCollide(player);
 			}			
 		}
 	}
@@ -36,20 +37,16 @@ void EntityManager::misCollision()
 {
 	
 	for (Player* player : players)
-	{			
-			
-
+	{						
 		for (Missile* missile : player->missiles)
 		{
 			for (Agent* agent : agents)
 			{
 				if (agent == player) continue;
-				
-				
-
+								
 				if (agent->body.Collide(missile->body))
 				{
-					agent->misCollide();
+					agent->misCollide(missile);
 					missile->duration = 100;
 				}
 				if (agent->state == 1)
@@ -68,10 +65,17 @@ void EntityManager::addAgent(Agent* agent)
 	agents.push_back(agent);
 }
 
+
 void EntityManager::addPlayer(Player* player)
 {
 	players.push_back(player);
 	this->addAgent(player);
+}
+
+void EntityManager::addEnemy(Enemy* enemy)
+{
+	enemies.push_back(enemy);
+	this->addAgent(enemy);
 }
 
 void EntityManager::checkState()

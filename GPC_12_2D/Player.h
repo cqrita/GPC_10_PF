@@ -18,8 +18,8 @@ public:
     void  Start() final override;
     void Update() final override;
     void    End() final override;
-    void misCollide() final override;
-    void entCollide() final override;
+    void misCollide(Missile* missile) final override;
+    void entCollide(Agent* agent) final override;
     void createMissile(float x, float y);
     void changeMoveState(Dir direction, const char* state);
     void moveUpdate();

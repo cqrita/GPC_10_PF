@@ -33,7 +33,7 @@ void Missile::Update()
 {
 	this->moveUpdate();
 	duration += Engine::Time::Get::Delta();
-	if (distance > 500)
+	if (distance > 500 || duration > 1000)
 	{
 		state = 0;
 	}

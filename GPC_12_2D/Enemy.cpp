@@ -35,10 +35,24 @@ void Enemy::Start()
     {
         state = 1;
     }
+    {
+        colDuration = colConst;
+        colState = false;
+    }
 }
 
 void Enemy::Update()
 {
+    if (colState)
+    {
+        colDuration -= Engine::Time::Get::Delta();
+    }
+    if (colDuration < 0)
+    {
+        colDuration = colConst;
+        colState = false;
+    }
+
     {
         body.Center.x = skin.Location[0];
         body.Center.y = skin.Location[1];
@@ -60,24 +74,40 @@ void Enemy::End()
     this->~Enemy();
 }
 
-void Enemy::misCollide()
+void Enemy::misCollide(Missile* missile)
 {
     state = 0;
     this->End();
 }
 
-void Enemy::entCollide()
+void Enemy::entCollide(Agent* agent)
 {
-
+    colState = true;
 }
 
 void Enemy::moveUpdate(Vector<2> location)
 {
-    Vector<2> dir = location - skin.Location ;
-    float angle = atan2f(dir[1], dir[0]);   
+    float speed = this->speed;
+    Vector<2> dir = location - skin.Location;
+    float angle = atan2f(dir[1], dir[0]);
+    if (colState)
+    {
+        speed = speed + 1500;
+        angle = angle + (3.14159265f);
+    }
+
     Vector<2> direction = { cos(angle), sin(angle) };
-    skin.Location += Normalize(direction) * speed * Engine::Time::Get::Delta();    
+    if (direction[0] < 0)
+    {
+        skin.Flipped = true;
+    }
+    else
+    {
+        skin.Flipped = false;
+    }
+    skin.Location += Normalize(direction) * speed * Engine::Time::Get::Delta();
 }
+
 
 void Enemy::getCam(Vector<2> location)
 {

@@ -109,16 +109,18 @@ void Player::End()
 
 }
 
-void Player::misCollide()
+void Player::misCollide(Missile* missile)
 {
 
 }
 
-void Player::entCollide()
+void Player::entCollide(Agent* agent)
 {
-
+    if (health > 0)
+    {
+        health = health - 1;
+    }
 }
-
 void Player::createMissile(float x, float y)
 {
     if (attack==false)

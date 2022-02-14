@@ -25,6 +25,7 @@
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Initialize.cpp" />
+    <ClCompile Include="Melee.cpp" />
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Test.cpp" />
@@ -54,6 +55,7 @@
     <ClInclude Include="Field.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Manager.h" />
+    <ClInclude Include="Melee.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />

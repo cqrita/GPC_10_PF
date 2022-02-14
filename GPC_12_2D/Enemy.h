@@ -23,9 +23,10 @@ public:
     
     Engine::Rendering::Animation::Component skin;
     Engine::Rendering::Image::Component     box;
+    Engine::Rendering::Image::Component healthImage;
     Vector<2> cam;
     int damage = 1;
-
+    int health;
 private:
     Engine::Rendering::Text::Component healthText;
     enum class MoveState

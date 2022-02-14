@@ -1,4 +1,5 @@
 #include "EntityManager.h"
+#include "Engine/Physics.h"
 #include <iostream>
 void EntityManager::Start()
 {
@@ -47,7 +48,7 @@ void EntityManager::misCollision()
 				if (agent->body.Collide(missile->body))
 				{
 					agent->misCollide(missile);
-					missile->duration = 100;
+					missile->duration = 1000;
 				}
 				if (agent->state == 1)
 				{
@@ -59,6 +60,26 @@ void EntityManager::misCollision()
 	}
 	
 }
+
+MeleeMouse EntityManager::mouseCollision(float x, float y)
+{
+	for (Enemy* enemy : enemies)
+	{
+		if (enemy->state == 1)
+		{
+			Engine::Physics::Component<Point> point = Point(x, y);
+			if (enemy->body.Collide(point))
+			{
+				MeleeMouse melee{ true,enemy->skin.Location };
+				return melee;
+			}
+		}		
+	}
+	MeleeMouse melee{ false,Vector<2>()};
+	return melee;
+}
+
+
 
 void EntityManager::addAgent(Agent* agent)
 {

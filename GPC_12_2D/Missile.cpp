@@ -4,7 +4,7 @@
 void Missile::Start()
 {
 	{
-		skin.Name = "Animation/Sonic/Idle";;
+		skin.Name = "Animation/Fio";
 		
 
 		skin.Length = Vector<2>(20, 20);
@@ -61,7 +61,6 @@ void Missile::moveUpdate()
 	if (EnemyHoming)
 	{
 		angle=this->changeAngle();
-		EnemyHoming = false;
 	}
 	float const radian = angle * (3.14159265f / 180.0f);
 	Vector<2> direction={cos(radian), sin(radian)};

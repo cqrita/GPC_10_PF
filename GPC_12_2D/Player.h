@@ -21,20 +21,29 @@ public:
     void misCollide(Missile* missile) final override;
     void entCollide(Agent* agent) final override;
     void createMissile(float x, float y);
+    void createMelee(float x, float y);
     void changeMoveState(Dir direction, const char* state);
     void moveUpdate();
     int bkCollide(Vector<2> location);
     void getCam(Vector<2> location);
 
+    void changeMoveStateM(float angle, const char* state);
+    void moveUpdateM();
+
+
+
 public:
     std::vector<Missile*> missiles;
     Engine::Rendering::Animation::Component skin;
     Engine::Rendering::Image::Component     box;
-    float attackSpeed = 300.0f;
+    float attackSpeed = 100.0f;
     float runCooltime = 1.0f;
-    float walkSpeed = 300;
-    float runSpeed = 1500; 
+    float walkSpeed = 400;
+    float runSpeed = 2000; 
     Vector<2> cam;
+
+    int health;
+
 private:   
     
     enum class MoveState
@@ -54,4 +63,7 @@ private:
     bool attack = false;
     bool run = false;
     bool runCool = false;
+
+    float angle;
+    float preAngle;
 };

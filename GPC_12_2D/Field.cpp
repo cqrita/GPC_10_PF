@@ -24,6 +24,7 @@ void Field::Start()
         entityManager->Start();
         player->Start();
         user->getPlayer(player);
+        user->getEntityManager(entityManager);
         entityManager->addPlayer(player);
     }
 }
@@ -36,23 +37,8 @@ Scene* Field::Update()
     
 
     background.Render();
-    entityManager->Update();
-    user->Update();
-    for (auto e= enemies.begin(); e!=enemies.end() && !enemies.empty();)
-    {
-        if ((*e)->state==1)
-        {
-            (*e)->moveUpdate(player->skin.Location);
-            (*e)->getCam(user->camera.Location);
-            (*e)->Update();
-            ++e;
-        }
-        else
-        {
-            (*e)->End();
-            e=enemies.erase(e);
-        }
-    }
+    
+    
     if (enemies.size()<3)
     {
         int x = rand() % (bkWidth*2)- bkWidth;
@@ -70,7 +56,23 @@ Scene* Field::Update()
         }
         
     }
-    
+    for (auto e = enemies.begin(); e != enemies.end() && !enemies.empty();)
+    {
+        if ((*e)->state == 1)
+        {
+            (*e)->moveUpdate(player->skin.Location);
+            (*e)->getCam(user->camera.Location);
+            (*e)->Update();
+            ++e;
+        }
+        else
+        {
+            (*e)->End();
+            e = enemies.erase(e);
+        }
+    }
+    entityManager->Update();
+    user->Update();
     return nullptr;
 }
 

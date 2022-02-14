@@ -2,10 +2,11 @@
 #include <cmath>
 #include "Engine/Time.h"
 #include "Global.h"
+#include <string>
 void Enemy::Start()
 {
     {
-        skin.Name = "Animation/Sonic/Idle";
+        skin.Name = "Animation/Sonic/Walk";
         skin.Duration = 1.0f;
         skin.Repeatable = true;
 
@@ -22,15 +23,29 @@ void Enemy::Start()
         speed = 300;
         direction = Dir::I;
     }
+
     {
+        health = 100;
+    }
+    
+        
+    {
+        auto healthString = std::to_string(health);
         healthText.Font.Name = "Font/arial";
         healthText.Font.Size = 30;
         healthText.Length = Vector<2>(50, 50) * 2;
-        healthText.Text = "test";
+        healthText.Text = healthString.c_str();
         
         healthText.Location[0] = skin.Location[0] - cam[0] + camWidth + 30;
         healthText.Location[1] = -skin.Location[1] + cam[1] + camHeight + 80;
         
+    }
+    {
+        healthImage.Name = "Image/Free";
+        float health = this->health * 0.01f;
+        healthImage.Length = Vector<2>(50 * health, 20);
+        healthImage.Location[0] = skin.Location[0] + (50 * health) / 2 - 25;
+        healthImage.Location[1] = skin.Location[1] - 40;
     }
     {
         state = 1;
@@ -61,11 +76,20 @@ void Enemy::Update()
     {
         healthText.Location[0] = skin.Location[0] - cam[0] + camWidth + 30;
         healthText.Location[1] = -skin.Location[1] + cam[1] + camHeight + 80;
+        auto healthString = std::to_string(health);
+        healthText.Text = healthString.c_str();
     }
+    
     {
-        healthText.Render();
         skin.Render();
         box.Render();
+    }
+    {
+        float health = this->health * 0.01f;
+        healthImage.Length = Vector<2>(50 * health, 20);
+        healthImage.Location[0] = skin.Location[0]+(50 * health)/2-25;
+        healthImage.Location[1] = skin.Location[1] - 40;
+        healthImage.Render();
     }
 }
 
@@ -76,8 +100,16 @@ void Enemy::End()
 
 void Enemy::misCollide(Missile* missile)
 {
-    state = 0;
-    this->End();
+    if (health > 0)
+    {
+        health = health - missile->damage;
+    }
+    if(health<=0)
+    {
+        state = 0;
+        this->End();
+    }  
+    colState = true;
 }
 
 void Enemy::entCollide(Agent* agent)
@@ -100,10 +132,18 @@ void Enemy::moveUpdate(Vector<2> location)
     if (direction[0] < 0)
     {
         skin.Flipped = true;
+        if (colState)
+        {
+            skin.Flipped = false;
+        }
     }
     else
     {
         skin.Flipped = false;
+        if (colState)
+        {
+            skin.Flipped = true;
+        }
     }
     skin.Location += Normalize(direction) * speed * Engine::Time::Get::Delta();
 }

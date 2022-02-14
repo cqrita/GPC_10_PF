@@ -7,7 +7,7 @@
 #include "Engine/Rendering.h"
 #include "Missile.h"
 
-static const float colConst = 0.01f;
+
 class Enemy final : public Agent
 {
 public:
@@ -18,9 +18,12 @@ public:
     void entCollide(Agent* agent) final override;
     void moveUpdate(Vector<2> location);
     void getCam(Vector<2> location);
+    void createMissile(float x, float y);
+
+
     ~Enemy() = default;
 public:
-    
+    std::vector<Missile*> missiles;
     Engine::Rendering::Animation::Component skin;
     Engine::Rendering::Image::Component     box;
     Engine::Rendering::Image::Component healthImage;
@@ -41,4 +44,9 @@ private:
     
     float colDuration = colConst;
     bool colState = false;
+
+    float attackSpeed = 0.5f;
+    float attackDuration;
+    bool attack = false;
+
 };

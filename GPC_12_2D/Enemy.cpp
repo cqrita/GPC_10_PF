@@ -54,6 +54,11 @@ void Enemy::Start()
         colDuration = colConst;
         colState = false;
     }
+
+    {
+        attackDuration = attackSpeed;
+        attack = false;
+    }
 }
 
 void Enemy::Update()
@@ -67,6 +72,18 @@ void Enemy::Update()
         colDuration = colConst;
         colState = false;
     }
+
+    if (attack)
+    {
+        attackDuration -= Engine::Time::Get::Delta();
+    }
+    if (attackDuration < 0)
+    {
+        attackDuration = attackSpeed;
+        attack = false;
+    }
+
+
 
     {
         body.Center.x = skin.Location[0];
@@ -91,6 +108,23 @@ void Enemy::Update()
         healthImage.Location[1] = skin.Location[1] - 40;
         healthImage.Render();
     }
+
+
+    for (auto m = missiles.begin(); m != missiles.end() && !missiles.empty();)
+    {
+        if ((*m)->state == 1)
+        {
+            (*m)->Update();
+            ++m;
+        }
+        else
+        {
+            (*m)->End();
+            m = missiles.erase(m);
+        }
+    }
+
+
 }
 
 void Enemy::End()
@@ -100,16 +134,19 @@ void Enemy::End()
 
 void Enemy::misCollide(Missile* missile)
 {
-    if (health > 0)
+    if (colState == false)
     {
-        health = health - missile->damage;
-    }
-    if(health<=0)
-    {
-        state = 0;
-        this->End();
-    }  
-    colState = true;
+        if (health > 0)
+        {
+            health = health - missile->damage;
+        }
+        if (health <= 0)
+        {
+            state = 0;
+            this->End();
+        }
+        colState = true;
+    }    
 }
 
 void Enemy::entCollide(Agent* agent)
@@ -124,7 +161,7 @@ void Enemy::moveUpdate(Vector<2> location)
     float angle = atan2f(dir[1], dir[0]);
     if (colState)
     {
-        speed = speed + 1500;
+        speed = speed + 1000;
         angle = angle + (3.14159265f);
     }
 
@@ -146,10 +183,26 @@ void Enemy::moveUpdate(Vector<2> location)
         }
     }
     skin.Location += Normalize(direction) * speed * Engine::Time::Get::Delta();
+    createMissile(location[0], location[1]);
 }
 
 
 void Enemy::getCam(Vector<2> location)
 {
     cam = location;
+}
+
+void Enemy::createMissile(float x, float y)
+{
+    if (attack == false)
+    {
+        Vector<2> mouse = { x - skin.Location[0],y - skin.Location[1] };
+        float angle = atan2f(mouse[1], mouse[0]) * (180.0f / 3.14159265f);
+
+        Vector<2> location = Normalize(mouse) * 30 + skin.Location;
+        Missile* missile = new Missile(angle, location, mouse);
+        missiles.push_back(missile);
+        missile->Start();
+        attack = true;
+    }
 }

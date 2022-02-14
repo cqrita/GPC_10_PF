@@ -73,6 +73,7 @@ Scene* Field::Update()
     }
     entityManager->Update();
     user->Update();
+
     return nullptr;
 }
 

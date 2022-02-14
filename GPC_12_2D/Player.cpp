@@ -42,6 +42,10 @@ void Player::Start()
         healthText.Location[0] = skin.Location[0] - cam[0] + camWidth + 30;
         healthText.Location[1] = -skin.Location[1] + cam[1] + camHeight + 80;
     }
+    {
+        colDuration = colConst;
+        colState = false;
+    }
     
 }
 
@@ -84,6 +88,17 @@ void Player::Update()
         runCool = false;
     }
 
+    if (colState)
+    {
+        colDuration -= Engine::Time::Get::Delta();
+    }
+    if (colDuration < 0)
+    {
+        colDuration = colConst;
+        colState = false;
+    }
+
+
     {
         healthText.Location[0] = skin.Location[0] - cam[0] + camWidth + 30;
         healthText.Location[1] = -skin.Location[1] + cam[1] + camHeight + 80;
@@ -94,9 +109,6 @@ void Player::Update()
     {
         skin.Render();
         box.Render();
-
-        
-
         
     }
     
@@ -123,14 +135,25 @@ void Player::End()
 
 void Player::misCollide(Missile* missile)
 {
-
+    if (colState == false)
+    {
+        if (health > 0)
+        {
+            health = health - 1;
+        }
+        colState = true;
+    }
 }
 
 void Player::entCollide(Agent* agent)
 {
-    if (health > 0)
+    if (colState == false)
     {
-        health = health - 1;
+        if (health > 0)
+        {
+            health = health - 1;
+        }
+        colState = true;
     }
 }
 void Player::createMissile(float x, float y)
@@ -141,7 +164,7 @@ void Player::createMissile(float x, float y)
         float angle = atan2f(mouse[1],mouse[0])*( 180.0f/3.14159265f);
         
         Vector<2> location = Normalize(mouse) * 30 + skin.Location;
-        Missile* missile = new Missile(angle, location, preDirection,mouse);
+        Missile* missile = new Missile(angle, location,mouse);
         missiles.push_back(missile);
         missile->Start();
         attack = true;
@@ -156,7 +179,7 @@ void Player::createMelee(float x, float y)
         float angle = atan2f(mouse[1], mouse[0]) * (180.0f / 3.14159265f);
 
         Vector<2> location = Normalize(mouse) * 30 + skin.Location;
-        Melee* missile = new Melee(angle, location, preDirection, mouse);
+        Melee* missile = new Melee(angle, location, mouse);
         missiles.push_back(missile);
         missile->Start();
         attack = true;

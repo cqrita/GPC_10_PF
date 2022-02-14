@@ -109,11 +109,10 @@ Missile::~Missile()
 	
 }
 
-Missile::Missile(float angle, Vector<2> location, Dir direction, Vector<2> user)
+Missile::Missile(float angle, Vector<2> location , Vector<2> user)
 {
 	this->angle = angle;
 	this->skin.Location = location;
-	this->direction = direction;
 	this->enemy = user;
 }
 

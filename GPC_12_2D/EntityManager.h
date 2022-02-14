@@ -22,6 +22,7 @@ public:
     void    End();
     void entCollision();
     void misCollision();
+    void eneMisCollision();
     MeleeMouse mouseCollision(float x, float y);
     void addAgent(Agent* agent);
     void addPlayer(Player* player);

@@ -12,6 +12,8 @@ static const int playerHeight = 33;
 static const float attackConst = 10.0f;
 static const float runConst = 0.2f;
 
+
+
 class Player final : public Agent
 {
 public:
@@ -66,4 +68,7 @@ private:
 
     float angle;
     float preAngle;
+
+    float colDuration = colConst;
+    bool colState = false;
 };

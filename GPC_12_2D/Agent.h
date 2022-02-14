@@ -3,6 +3,7 @@
 #include "Engine/Quadrangle.h"
 #include "Engine/Physics.h"
 #include "Missile.h"
+static const float colConst = 0.05f;
 class Agent abstract : public Entity
 {
 public:

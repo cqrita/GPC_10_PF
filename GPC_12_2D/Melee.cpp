@@ -21,7 +21,7 @@ void Melee::Start()
 
 	{
 		speed = 250;
-		damage = 50;
+		damage = 20;
 	}
 	{
 		EnemyHoming = false;
@@ -50,10 +50,9 @@ void Melee::Update()
 
 }
 
-Melee::Melee(float angle, Vector<2> location, Dir direction, Vector<2> user)
+Melee::Melee(float angle, Vector<2> location, Vector<2> user)
 {
 	this->angle = angle;
 	this->skin.Location = location;
-	this->direction = direction;
 	this->enemy = user;
 }

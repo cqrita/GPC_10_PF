@@ -10,6 +10,7 @@ void EntityManager::Update()
 {	
 	this->entCollision();
 	this->misCollision();
+	this->eneMisCollision();
 	this->checkState();
 }
 
@@ -59,6 +60,24 @@ void EntityManager::misCollision()
 		}
 	}
 	
+}
+
+void EntityManager::eneMisCollision()
+{
+	for (Enemy* enemy : enemies)
+	{
+		for (Missile* missile : enemy->missiles)
+		{
+			for (Player* player : players)
+			{				
+				if (player->body.Collide(missile->body))
+				{
+					player->misCollide(missile);
+					missile->duration = 1000;
+				}
+			}
+		}
+	}
 }
 
 MeleeMouse EntityManager::mouseCollision(float x, float y)

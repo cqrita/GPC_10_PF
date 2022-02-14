@@ -16,7 +16,7 @@ public:
     float changeAngle();
     Missile();
     ~Missile();
-    Missile(float angle,Vector<2> location, Dir direction, Vector<2> user);
+    Missile(float angle,Vector<2> location , Vector<2> user);
 public:
     Engine::Physics::Component<Circle>  body;
     float duration = 0;
@@ -28,7 +28,6 @@ public:
 
     Engine::Rendering::Image::Component     box;
     Engine::Rendering::Animation::Component skin;
-    Dir direction=Dir::I;
     float angle=0;
     float speed = 0;
     

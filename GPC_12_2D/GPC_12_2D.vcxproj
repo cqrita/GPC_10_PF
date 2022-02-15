@@ -27,6 +27,7 @@
     <ClCompile Include="Initialize.cpp" />
     <ClCompile Include="Melee.cpp" />
     <ClCompile Include="Missile.cpp" />
+    <ClCompile Include="Pet.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="Test2.cpp" />
@@ -57,6 +58,7 @@
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Melee.h" />
     <ClInclude Include="Missile.h" />
+    <ClInclude Include="Pet.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Test.h" />

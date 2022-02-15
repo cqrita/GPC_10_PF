@@ -99,7 +99,7 @@ void User::attackInput()
 
 void User::meleeInput()
 {
-    if (Input::Get::Key::Down(VK_RBUTTON))
+    if (Input::Get::Key::Press(VK_RBUTTON))
     {
         auto value = entityManager->mouseCollision(getMouseX(),getMouseY());
         if (value.flag == true && Length(player->skin.Location-value.location)<150)

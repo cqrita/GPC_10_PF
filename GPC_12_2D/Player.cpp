@@ -46,12 +46,15 @@ void Player::Start()
         colDuration = colConst;
         colState = false;
     }
-    
+    {
+        petNum = 1;
+    }
 }
 
 void Player::Update()
 {	
     this->moveUpdateM();
+    this->createPet();
     {
         body.Center.x = skin.Location[0];
         body.Center.y = skin.Location[1];
@@ -125,12 +128,26 @@ void Player::Update()
             m=missiles.erase(m);
         }
 	}
-    
+    for (auto p = pets.begin(); p != pets.end() && !pets.empty();)
+    {
+        (*p)->getPlayer(skin.Location);
+        (*p)->Update();
+        ++p;                
+    }
 }
 
 void Player::End()
 {
-
+    for (auto m = missiles.begin(); m != missiles.end() && !missiles.empty();)
+    {        
+        (*m)->End();
+        m = missiles.erase(m);        
+    }
+    for (auto p = pets.begin(); p != pets.end() && !pets.empty();)
+    {
+        (*p)->End();
+        p = pets.erase(p);
+    }
 }
 
 void Player::misCollide(Missile* missile)
@@ -367,5 +384,18 @@ void Player::moveUpdateM()
         {
             skin.Location[1] = location[1];
         }
+    }
+}
+
+void Player::createPet()
+{
+    if (pets.size()<petNum)
+    {
+        Vector<2> location = skin.Location;
+        location[0] = location[0] + 100;
+        Pet* pet = new Pet();
+        pet->skin.Location = location;
+        pets.push_back(pet);
+        pet->Start();
     }
 }

@@ -11,7 +11,6 @@ void Enemy::Start()
         skin.Repeatable = true;
 
         skin.Length = Vector<2>(50, 66);
-        skin.Location = Vector<2>(0, 0);
     }
     {
         body.Length = Point(50, 66);
@@ -129,6 +128,11 @@ void Enemy::Update()
 
 void Enemy::End()
 {
+    for (auto m = missiles.begin(); m != missiles.end() && !missiles.empty();)
+    {
+        (*m)->End();
+        m = missiles.erase(m);
+    }
     this->~Enemy();
 }
 
@@ -183,6 +187,7 @@ void Enemy::moveUpdate(Vector<2> location)
         }
     }
     skin.Location += Normalize(direction) * speed * Engine::Time::Get::Delta();
+
     createMissile(location[0], location[1]);
 }
 

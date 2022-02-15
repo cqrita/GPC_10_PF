@@ -6,7 +6,7 @@
 #include "Engine/Physics.h"
 #include "Engine/Rendering.h"
 #include "Missile.h"
-
+#include "Pet.h"
 static const int playerWidth = 25;
 static const int playerHeight = 33;
 static const float attackConst = 10.0f;
@@ -31,10 +31,11 @@ public:
 
     void changeMoveStateM(float angle, const char* state);
     void moveUpdateM();
-
+    void createPet();
 
 
 public:
+    std::vector<Pet*> pets;
     std::vector<Missile*> missiles;
     Engine::Rendering::Animation::Component skin;
     Engine::Rendering::Image::Component     box;
@@ -45,6 +46,7 @@ public:
     Vector<2> cam;
 
     int health;
+    int petNum;
 
 private:   
     

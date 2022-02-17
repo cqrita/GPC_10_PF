@@ -8,23 +8,24 @@
 void Player::Start()
 {
     {
-        skin.Name = "Animation/Sonic/Idle";
-        skin.Duration = 1.0f;
+        skin.Name = "Animation/Black/Idle";
+        skin.Duration = 0.25f;
         skin.Repeatable = true;
 
         skin.Length = Vector<2>(playerWidth, playerHeight)*2;
         skin.Location = Vector<2>(0, 0);
     }
     {
-        body.Length = Point(playerWidth*2, playerHeight*2);
+        body.Length = Point(playerWidth*2-10, playerHeight*2-10);
 
         box.Name = "Image/GBB";
-        box.Length = Vector<2>(playerWidth, playerHeight) * 2;
+        box.Length = Vector<2>(playerWidth, playerHeight) * 2-Vector<2>(10,10);
     }
     {
         speed = 0;
         attackDuration = attackConst/attackSpeed;
         runDuration = runConst;
+        attackTime = false;
         attack = false;
         run = false;
         runCool = false;
@@ -49,6 +50,35 @@ void Player::Start()
     {
         petNum = 1;
     }
+    {
+        muzzle.Name = "Animation/Black/MuzzleFlash";
+        muzzle.Duration = 0.1f;
+        muzzle.Repeatable = true;
+
+        muzzle.Length = Vector<2>(0, 0);
+        muzzle.Location = Vector<2>(0, 0);
+    }
+
+
+    {
+        bar.Name = "Image/Bar";
+        bar.Length = Vector<2>(60, 10);
+        bar.Location[0] = skin.Location[0];
+        bar.Location[1] = skin.Location[1] - 40;
+    }
+    {
+        progressBar.Name = "Image/ProgressBar";
+        float health = this->health * 0.01f;
+        progressBar.Length = Vector<2>(60 * health, 10);
+        progressBar.Location[0] = skin.Location[0] + (60 * health) / 2 - 30;
+        progressBar.Location[1] = skin.Location[1] - 40;
+    }
+    {
+        barBorder.Name = "Image/ProgressBarBorder";
+        barBorder.Length = Vector<2>(60, 10);
+        barBorder.Location[0] = skin.Location[0];
+        barBorder.Location[1] = skin.Location[1] - 40;
+    }
 }
 
 void Player::Update()
@@ -61,14 +91,14 @@ void Player::Update()
         box.Location = skin.Location;
     }
     
-    if (attack)
+    if (attackTime)
     {
         attackDuration -= Engine::Time::Get::Delta();
     }
     if (attackDuration < 0)
     {
         attackDuration = attackConst / attackSpeed;
-        attack = false;
+        attackTime = false;
     }
 
     if(run)
@@ -107,12 +137,29 @@ void Player::Update()
         healthText.Location[1] = -skin.Location[1] + cam[1] + camHeight + 80;
         auto healthString = std::to_string(health);
         healthText.Text = healthString.c_str();
-        healthText.Render();
     }
     {
         skin.Render();
         box.Render();
-        
+        muzzle.Render();
+        muzzle.Length = Vector<2>(0, 0);
+    }
+    {
+        bar.Location[0] = skin.Location[0];
+        bar.Location[1] = skin.Location[1] - 40;
+        bar.Render();
+    }
+    {
+        float health = this->health * 0.01f;
+        progressBar.Length = Vector<2>(60 * health, 10);
+        progressBar.Location[0] = skin.Location[0] + (60 * health) / 2 - 30;
+        progressBar.Location[1] = skin.Location[1] - 40;
+        progressBar.Render();
+    }
+    {
+        barBorder.Location[0] = skin.Location[0];
+        barBorder.Location[1] = skin.Location[1] - 40;
+        barBorder.Render();
     }
     
 	for (auto m=missiles.begin(); m != missiles.end()&&!missiles.empty();)
@@ -134,6 +181,8 @@ void Player::Update()
         (*p)->Update();
         ++p;                
     }
+
+    attack = false;
 }
 
 void Player::End()
@@ -175,31 +224,54 @@ void Player::entCollide(Agent* agent)
 }
 void Player::createMissile(float x, float y)
 {
-    if (attack==false)
+    muzzle.Length = Vector<2>(10, 10);
+    attack = true;
+    if (attackTime ==false)
     {
         Vector<2> mouse = {x- skin.Location[0],y-skin.Location[1] };
         float angle = atan2f(mouse[1],mouse[0])*( 180.0f/3.14159265f);
-        
-        Vector<2> location = Normalize(mouse) * 30 + skin.Location;
+        if (mouse[0] > 0)
+        {
+            skin.Flipped = false;
+        }
+        else
+        {
+            skin.Flipped = true;
+        }
+        Vector<2> location = Normalize(mouse) * 25 + skin.Location;
         Missile* missile = new Missile(angle, location,mouse);
         missiles.push_back(missile);
         missile->Start();
-        attack = true;
+        attackTime = true;
+
+        muzzle.Location = Normalize(Vector<2>(mouse[0], 0)) * 20 + skin.Location;
     }
 }
 
 void Player::createMelee(float x, float y)
 {
-    if (attack == false)
+    muzzle.Length = Vector<2>(10, 10);
+    attack = true;
+    if (attackTime == false)
     {
         Vector<2> mouse = { x - skin.Location[0],y - skin.Location[1] };
         float angle = atan2f(mouse[1], mouse[0]) * (180.0f / 3.14159265f);
-
+        if (mouse[0] > 0)
+        {
+            skin.Flipped = false;
+        }
+        else
+        {
+            skin.Flipped = true;
+        }
         Vector<2> location = Normalize(mouse) * 30 + skin.Location;
         Melee* missile = new Melee(angle, location, mouse);
         missiles.push_back(missile);
         missile->Start();
-        attack = true;
+        attackTime = true;
+
+        
+        muzzle.Location = Normalize(Vector<2>(mouse[0],0)) * 20 + skin.Location;
     }
 }
 
@@ -236,19 +308,19 @@ void Player::moveUpdate()
     
     if (moveState == MoveState::run)
     {
-        skin.Name = "Animation/Sonic/Run";
+        skin.Name = "Animation/Black/Run";
         skin.Duration = 0.25f;
         speed = runSpeed;
     }
     else if (moveState == MoveState::walk)
     {
-        skin.Name = "Animation/Sonic/Walk";
+        skin.Name = "Animation/Black/Run";
         skin.Duration = 1.0f;
         speed = walkSpeed;
     }
     else
     {
-        skin.Name = "Animation/Sonic/Idle";
+        skin.Name = "Animation/Black/Idle";
         skin.Duration = 1.0f;
         speed = 0;
     }
@@ -281,9 +353,9 @@ void Player::moveUpdate()
 
 int Player::bkCollide(Vector<2> location)
 {
-    if (location[0] > (playerWidth - bkWidth) && location[0] < (bkWidth - playerWidth))
+    if (location[0] > (playerWidth - bkWidth-5) && location[0] < (bkWidth - playerWidth + 5))
     {
-        if (location[1] > (playerHeight - bkHeight) && location[1] < (bkHeight - playerHeight))
+        if (location[1] > (playerHeight - bkHeight - 5) && location[1] < (bkHeight - playerHeight + 5))
         {
             return 3;
         }
@@ -294,7 +366,7 @@ int Player::bkCollide(Vector<2> location)
     }
     else 
     {
-        if (location[1] > (playerHeight - bkHeight) && location[1] < (bkHeight - playerHeight))
+        if (location[1] > (playerHeight - bkHeight - 5) && location[1] < (bkHeight - playerHeight + 5))
         {
             return 2;
         }
@@ -342,32 +414,45 @@ void Player::moveUpdateM()
 {
     float const radian = angle * (3.14159265f / 180.0f);
     Vector<2> direction = { cos(radian), sin(radian) };
+    skin.Repeatable = true;
     if (moveState == MoveState::run)
     {
-        skin.Name = "Animation/Sonic/Run";
-        skin.Duration = 0.25f;
+        skin.Name = "Animation/Black/Run";
+        skin.Duration = 0.1f;
         speed = runSpeed;
     }
     else if (moveState == MoveState::walk)
-    {
-        skin.Name = "Animation/Sonic/Walk";
-        skin.Duration = 1.0f;
+    {        
+        skin.Name = "Animation/Black/Run";              
+        skin.Duration = 0.5f;
         speed = walkSpeed;
     }
     else
     {
-        skin.Name = "Animation/Sonic/Idle";
-        skin.Duration = 1.0f;
+        if (attack)
+        {
+            skin.Name = "Animation/Black/Crouch";
+            skin.Repeatable = false;
+            skin.Playback = 0.4f;
+        }
+        else
+        {
+            skin.Name = "Animation/Black/Idle";
+        }       
+        skin.Duration = 0.5f;
         speed = 0;
     }
-    if (direction[0] < 0)
+    if (attack == false && moveState != MoveState::idle)
     {
-        skin.Flipped = true;
-    }
-    else if (direction[0] > 0)
-    {
-        skin.Flipped = false;
-    }
+        if (direction[0] < 0)
+        {
+            skin.Flipped = true;
+        }
+        else if (direction[0] > 0)
+        {
+            skin.Flipped = false;
+        }
+    }   
     if (direction[0] != 0 or direction[1] != 0)
     {
         Vector<2> location = skin.Location + Normalize(direction) * speed * Engine::Time::Get::Delta();

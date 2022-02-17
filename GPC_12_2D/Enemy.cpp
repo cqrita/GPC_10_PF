@@ -6,11 +6,11 @@
 void Enemy::Start()
 {
     {
-        skin.Name = "Animation/Sonic/Walk";
-        skin.Duration = 1.0f;
+        skin.Name = "Animation/Mushroom/Run";
+        skin.Duration = 0.5f;
         skin.Repeatable = true;
 
-        skin.Length = Vector<2>(50, 66);
+        skin.Length = Vector<2>(50, 50)*4;
     }
     {
         body.Length = Point(50, 66);
@@ -19,32 +19,31 @@ void Enemy::Start()
         box.Length = Vector<2>(50, 66);
     }
     {
-        speed = 300;
+        constSpeed = 300;
         direction = Dir::I;
     }
 
     {
         health = 100;
     }
-    
-        
     {
-        auto healthString = std::to_string(health);
-        healthText.Font.Name = "Font/arial";
-        healthText.Font.Size = 30;
-        healthText.Length = Vector<2>(50, 50) * 2;
-        healthText.Text = healthString.c_str();
-        
-        healthText.Location[0] = skin.Location[0] - cam[0] + camWidth + 30;
-        healthText.Location[1] = -skin.Location[1] + cam[1] + camHeight + 80;
-        
+        bar.Name = "Image/Bar";
+        bar.Length = Vector<2>(60, 10);
+        bar.Location[0] = skin.Location[0];
+        bar.Location[1] = skin.Location[1] - 40;
     }
     {
-        healthImage.Name = "Image/Free";
+        progressBar.Name = "Image/ProgressBar";
         float health = this->health * 0.01f;
-        healthImage.Length = Vector<2>(50 * health, 20);
-        healthImage.Location[0] = skin.Location[0] + (50 * health) / 2 - 25;
-        healthImage.Location[1] = skin.Location[1] - 40;
+        progressBar.Length = Vector<2>(60 * health, 10);
+        progressBar.Location[0] = skin.Location[0] + (60 * health) / 2 - 30;
+        progressBar.Location[1] = skin.Location[1] - 40;
+    }
+    {
+        barBorder.Name = "Image/ProgressBarBorder";
+        barBorder.Length = Vector<2>(60, 10);
+        barBorder.Location[0] = skin.Location[0];
+        barBorder.Location[1] = skin.Location[1] - 40;
     }
     {
         state = 1;
@@ -55,13 +54,28 @@ void Enemy::Start()
     }
 
     {
-        attackDuration = attackSpeed;
+        attackCool = attackSpeed;
+        attackCoolFlag = false;
+    }
+    {
+        attackDuration = attackTime;
         attack = false;
     }
 }
 
 void Enemy::Update()
 {
+    if (!attack)
+    {
+        this->move();
+        skin.Name = "Animation/Mushroom/Run";
+    }
+    else
+    {
+        skin.Name = "Animation/Mushroom/Attack";
+    }
+    this->createMissile(player[0],player[1]);
+    
     if (colState)
     {
         colDuration -= Engine::Time::Get::Delta();
@@ -72,16 +86,25 @@ void Enemy::Update()
         colState = false;
     }
 
+    if (attackCoolFlag)
+    {
+        attackCool -= Engine::Time::Get::Delta();
+    }
+    if (attackCool < 0)
+    {
+        attackCool = attackSpeed;
+        attackCoolFlag = false;
+    }
+
     if (attack)
     {
         attackDuration -= Engine::Time::Get::Delta();
     }
     if (attackDuration < 0)
     {
-        attackDuration = attackSpeed;
+        attackDuration = attackTime;
         attack = false;
     }
-
 
 
     {
@@ -101,13 +124,22 @@ void Enemy::Update()
         box.Render();
     }
     {
-        float health = this->health * 0.01f;
-        healthImage.Length = Vector<2>(50 * health, 20);
-        healthImage.Location[0] = skin.Location[0]+(50 * health)/2-25;
-        healthImage.Location[1] = skin.Location[1] - 40;
-        healthImage.Render();
+        bar.Location[0] = skin.Location[0];
+        bar.Location[1] = skin.Location[1] - 40;
+        bar.Render();
     }
-
+    {
+        float health = this->health * 0.01f;
+        progressBar.Length = Vector<2>(60 * health, 10);
+        progressBar.Location[0] = skin.Location[0] + (60 * health) / 2 - 30;
+        progressBar.Location[1] = skin.Location[1] - 40;
+        progressBar.Render();
+    }
+    {
+        barBorder.Location[0] = skin.Location[0];
+        barBorder.Location[1] = skin.Location[1] - 40;
+        barBorder.Render();
+    }
 
     for (auto m = missiles.begin(); m != missiles.end() && !missiles.empty();)
     {
@@ -160,15 +192,19 @@ void Enemy::entCollide(Agent* agent)
 
 void Enemy::moveUpdate(Vector<2> location)
 {
-    float speed = this->speed;
+    player = location;
+    speed = constSpeed;
     Vector<2> dir = location - skin.Location;
-    float angle = atan2f(dir[1], dir[0]);
+    angle = atan2f(dir[1], dir[0]);
     if (colState)
     {
         speed = speed + 1000;
         angle = angle + (3.14159265f);
-    }
+    }   
+}
 
+void Enemy::move()
+{
     Vector<2> direction = { cos(angle), sin(angle) };
     if (direction[0] < 0)
     {
@@ -187,8 +223,6 @@ void Enemy::moveUpdate(Vector<2> location)
         }
     }
     skin.Location += Normalize(direction) * speed * Engine::Time::Get::Delta();
-
-    createMissile(location[0], location[1]);
 }
 
 
@@ -199,7 +233,7 @@ void Enemy::getCam(Vector<2> location)
 
 void Enemy::createMissile(float x, float y)
 {
-    if (attack == false)
+    if (attackCoolFlag == false)
     {
         Vector<2> mouse = { x - skin.Location[0],y - skin.Location[1] };
         float angle = atan2f(mouse[1], mouse[0]) * (180.0f / 3.14159265f);
@@ -208,6 +242,8 @@ void Enemy::createMissile(float x, float y)
         Missile* missile = new Missile(angle, location, mouse);
         missiles.push_back(missile);
         missile->Start();
+        attackCoolFlag = true;
         attack = true;
     }
 }
+

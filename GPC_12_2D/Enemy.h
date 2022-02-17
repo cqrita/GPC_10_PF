@@ -17,6 +17,7 @@ public:
     void misCollide(Missile* missile) final override;
     void entCollide(Agent* agent) final override;
     void moveUpdate(Vector<2> location);
+    void move();
     void getCam(Vector<2> location);
     void createMissile(float x, float y);
 
@@ -26,8 +27,11 @@ public:
     std::vector<Missile*> missiles;
     Engine::Rendering::Animation::Component skin;
     Engine::Rendering::Image::Component     box;
-    Engine::Rendering::Image::Component healthImage;
+    Engine::Rendering::Image::Component progressBar;
+    Engine::Rendering::Image::Component bar;
+    Engine::Rendering::Image::Component barBorder;
     Vector<2> cam;
+    Vector<2> player;
     int damage = 1;
     int health;
 private:
@@ -41,12 +45,17 @@ private:
     
     Dir direction;
     float speed;
-    
+    float constSpeed;
+    float angle;
+
     float colDuration = colConst;
     bool colState = false;
 
-    float attackSpeed = 0.5f;
-    float attackDuration;
-    bool attack = false;
+    float attackSpeed = 1.0f;
+    float attackCool;
+    bool attackCoolFlag = false;
 
+    float attackTime = 0.5f;
+    float attackDuration;
+    bool attack;
 };

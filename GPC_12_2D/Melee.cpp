@@ -3,8 +3,8 @@
 void Melee::Start()
 {
 	{
-		skin.Name = "Animation/Fio";
-
+		skin.Name = "Animation/Black/Tomato";
+		skin.Duration = 0.25f;
 
 		skin.Length = Vector<2>(50, 50);
 

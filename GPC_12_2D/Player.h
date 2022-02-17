@@ -38,11 +38,12 @@ public:
     std::vector<Pet*> pets;
     std::vector<Missile*> missiles;
     Engine::Rendering::Animation::Component skin;
+    Engine::Rendering::Animation::Component muzzle;
     Engine::Rendering::Image::Component     box;
     float attackSpeed = 100.0f;
     float runCooltime = 1.0f;
     float walkSpeed = 400;
-    float runSpeed = 2000; 
+    float runSpeed = 1000; 
     Vector<2> cam;
 
     int health;
@@ -60,10 +61,16 @@ private:
     Dir direction;
     Dir preDirection;
     Engine::Rendering::Text::Component healthText;
+    Engine::Rendering::Image::Component progressBar;
+    Engine::Rendering::Image::Component bar;
+    Engine::Rendering::Image::Component barBorder;
+
+
     float speed;
     float attackDuration;
     float runDuration;
     float runCoolDuration;
+    bool attackTime = false;
     bool attack = false;
     bool run = false;
     bool runCool = false;

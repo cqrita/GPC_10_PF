@@ -4,10 +4,10 @@
 void Missile::Start()
 {
 	{
-		skin.Name = "Animation/Fio";
+		skin.Name = "Animation/Black/Bulleta";
 		
 
-		skin.Length = Vector<2>(20, 20);
+		skin.Length = Vector<2>(10, 10);
 		
 	}
 	{
@@ -15,7 +15,7 @@ void Missile::Start()
 		body.Center = Point(skin.Location[0], skin.Location[1]);
 
 		box.Name = "Image/GBB";
-		box.Length = Vector<2>(20, 20);
+		box.Length = skin.Length;
 
 	}
 

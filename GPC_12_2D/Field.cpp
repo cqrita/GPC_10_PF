@@ -10,7 +10,7 @@
 void Field::Start()
 {
     {
-        background.Name = "Image/Celadon";
+        background.Name = "Image/grass";
 
         background.Length = Vector<2>(bkWidth, bkHeight)*2;
     }

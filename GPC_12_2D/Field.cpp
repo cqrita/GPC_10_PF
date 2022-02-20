@@ -6,7 +6,8 @@
 #include "Engine/Input.h"
 #include "Player.h"
 #include "Enemy.h"
-
+#include "GameEnd.h"
+#include <string>
 void Field::Start()
 {
     {
@@ -14,7 +15,16 @@ void Field::Start()
 
         background.Length = Vector<2>(bkWidth, bkHeight)*2;
     }
-    
+    {
+        enemyCount = 0;
+        UI.Font.Name = "Font/arial";
+        UI.Font.Size = 30;
+        UI.Length = Vector<2>(50, 50) * 2;
+        UI.Location[0] = 100;
+        UI.Location[1] = 100;
+        auto countStr = std::to_string(enemyCount);
+        UI.Text = countStr.c_str();
+    }
     std::srand(static_cast<unsigned int>(time(nullptr)));
     {
         entityManager = new EntityManager;
@@ -69,10 +79,23 @@ Scene* Field::Update()
         {
             (*e)->End();
             e = enemies.erase(e);
+            enemyCount = enemyCount + 1;
         }
     }
     entityManager->Update();
     user->Update();
+
+    {
+        UI.Location[0] = 100;
+        UI.Location[1] = 100;
+        auto countStr = std::to_string(enemyCount);
+        UI.Text = countStr.c_str();
+        UI.Render();
+    }
+    if (player->state == 0)
+    {
+        return new GameEnd(enemyCount);
+    }
 
     return nullptr;
 }

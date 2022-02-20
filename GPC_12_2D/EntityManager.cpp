@@ -1,5 +1,6 @@
 #include "EntityManager.h"
 #include "Engine/Physics.h"
+#include "Engine/Quadrangle.h"
 #include <iostream>
 void EntityManager::Start()
 {
@@ -21,12 +22,16 @@ void EntityManager::End()
 
 void EntityManager::entCollision()
 {
-	for (Agent* agent : agents)
+	for (Player* player : players)
 	{
-		for (Player* player : players)
-		{
-			if (agent == player) continue;			
-			if (agent->body.Collide(player->body))
+		Engine::Physics::Component<Quadrangle> body = player->body;
+		body.Length.x += 30;
+		body.Length.y += 30;
+		for (Agent* agent : agents)
+		{		
+			if (agent == player) continue;
+
+			if (agent->body.Collide(body))
 			{
 				player->entCollide(agent);
 				agent->entCollide(player);

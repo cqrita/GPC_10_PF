@@ -20,6 +20,8 @@ private:
 
     std::vector<Enemy*> enemies;
     Engine::Rendering::Image::Component background;
+    Engine::Rendering::Text::Component UI;
+    int enemyCount;
     User* user = nullptr;
     EntityManager* entityManager = nullptr;
     Player* player = nullptr;

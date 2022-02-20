@@ -79,6 +79,9 @@ void Player::Start()
         barBorder.Location[0] = skin.Location[0];
         barBorder.Location[1] = skin.Location[1] - 40;
     }
+    {
+        state = 1;
+    }
 }
 
 void Player::Update()
@@ -140,7 +143,6 @@ void Player::Update()
     }
     {
         skin.Render();
-        box.Render();
         muzzle.Render();
         muzzle.Length = Vector<2>(0, 0);
     }
@@ -183,6 +185,10 @@ void Player::Update()
     }
 
     attack = false;
+    if (health <= 0)
+    {
+        state = 0;
+    }
 }
 
 void Player::End()
@@ -201,24 +207,18 @@ void Player::End()
 
 void Player::misCollide(Missile* missile)
 {
-    if (colState == false)
+    
+    if (health > 0)
     {
-        if (health > 0)
-        {
-            health = health - 1;
-        }
-        colState = true;
+        health = health - 1;
     }
+        
 }
 
 void Player::entCollide(Agent* agent)
 {
     if (colState == false)
     {
-        if (health > 0)
-        {
-            health = health - 1;
-        }
         colState = true;
     }
 }

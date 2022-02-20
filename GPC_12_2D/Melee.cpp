@@ -44,7 +44,6 @@ void Melee::Update()
 	}
 	{
 		skin.Render();
-		box.Render();
 	}
 
 

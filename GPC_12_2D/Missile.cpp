@@ -44,7 +44,6 @@ void Missile::Update()
 	}
 	{
 		skin.Render();
-		box.Render();
 	}
 	
 	

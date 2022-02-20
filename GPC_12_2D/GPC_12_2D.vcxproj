@@ -19,11 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="ButtonManager.cpp" />
     <ClCompile Include="Demo.cpp" />
     <ClCompile Include="Dummy.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Field.cpp" />
+    <ClCompile Include="GameEnd.cpp" />
+    <ClCompile Include="GameStart.cpp" />
     <ClCompile Include="Initialize.cpp" />
     <ClCompile Include="Melee.cpp" />
     <ClCompile Include="Missile.cpp" />
@@ -36,6 +40,8 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Agent.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="ButtonManager.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Dummy.h" />
     <ClInclude Include="Enemy.h" />
@@ -54,6 +60,8 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Field.h" />
+    <ClInclude Include="GameEnd.h" />
+    <ClInclude Include="GameStart.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Melee.h" />

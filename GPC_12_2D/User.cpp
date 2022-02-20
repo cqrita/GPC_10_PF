@@ -17,7 +17,7 @@ void User::Start()
 
 void User::Update()
 {
-    std::cout << getMouseX() << " " << getMouseY() << std::endl;
+    
     if (doubleTapFlag)
     {
         doubleTap -= Engine::Time::Get::Delta();

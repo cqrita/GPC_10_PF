@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Attack.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="ButtonManager.cpp" />
     <ClCompile Include="Demo.cpp" />
@@ -31,7 +32,10 @@
     <ClCompile Include="Initialize.cpp" />
     <ClCompile Include="Melee.cpp" />
     <ClCompile Include="Missile.cpp" />
+    <ClCompile Include="MushMissile.cpp" />
+    <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="Pet.cpp" />
+    <ClCompile Include="PetMissile.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="Test2.cpp" />
@@ -40,6 +44,7 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Agent.h" />
+    <ClInclude Include="Attack.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="ButtonManager.h" />
     <ClInclude Include="Direction.h" />
@@ -66,7 +71,10 @@
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Melee.h" />
     <ClInclude Include="Missile.h" />
+    <ClInclude Include="MushMissile.h" />
+    <ClInclude Include="Mushroom.h" />
     <ClInclude Include="Pet.h" />
+    <ClInclude Include="PetMissile.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Test.h" />

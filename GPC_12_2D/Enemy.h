@@ -7,15 +7,15 @@
 #include "Engine/Rendering.h"
 #include "Missile.h"
 
-
-class Enemy final : public Agent
+static float deathConst=0.5f;
+class Enemy : public Agent
 {
 public:
-    void  Start() final override;
-    void Update() final override;
-    void    End() final override;
-    void misCollide(Missile* missile) final override;
-    void entCollide(Agent* agent) final override;
+    void  Start()  override;
+    void Update()  override;
+    void    End()  override;
+    void misCollide(Missile* missile)  override;
+    void entCollide(Agent* agent)  override;
     void moveUpdate(Vector<2> location);
     void move();
     void getCam(Vector<2> location);
@@ -34,7 +34,7 @@ public:
     Vector<2> player;
     int damage = 1;
     int health;
-private:
+
     Engine::Rendering::Text::Component healthText;
     enum class MoveState
     {
@@ -58,4 +58,7 @@ private:
     float attackTime = 0.5f;
     float attackDuration;
     bool attack;
+
+    float deathDuration;
+    bool deathState;
 };

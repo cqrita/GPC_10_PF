@@ -1,5 +1,6 @@
 #include "Pet.h"
 #include "Engine/Time.h"
+#include "PetMissile.h"
 void Pet::Start()
 {
     {
@@ -101,7 +102,7 @@ void Pet::createMissile(float x, float y)
         float angle = atan2f(mouse[1], mouse[0]) * (180.0f / 3.14159265f);
 
         Vector<2> location = Normalize(mouse) * 30 + skin.Location;
-        Missile* missile = new Missile(angle, location, mouse);
+        PetMissile* missile = new PetMissile(angle, location, mouse);
         missiles.push_back(missile);
         missile->Start();
         attack = true;

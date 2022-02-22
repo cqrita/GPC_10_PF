@@ -5,6 +5,7 @@
 #include <string>
 #include <cmath>
 #include "Melee.h"
+#include "MissileA.h"
 void Player::Start()
 {
     {
@@ -210,7 +211,7 @@ void Player::misCollide(Missile* missile)
     
     if (health > 0)
     {
-        health = health - 1;
+        health = health - missile->damage;
     }
         
 }
@@ -239,7 +240,7 @@ void Player::createMissile(float x, float y)
             skin.Flipped = true;
         }
         Vector<2> location = Normalize(mouse) * 25 + skin.Location;
-        Missile* missile = new Missile(angle, location,mouse);
+        MissileA* missile = new MissileA(angle, location,mouse);
         missiles.push_back(missile);
         missile->Start();
         attackTime = true;

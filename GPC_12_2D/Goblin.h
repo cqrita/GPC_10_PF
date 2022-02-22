@@ -1,6 +1,6 @@
 #pragma once
 #include "Enemy.h"
-class Mushroom : public Enemy
+class Goblin : public Enemy
 {
 public:
 	void  Start()  override;

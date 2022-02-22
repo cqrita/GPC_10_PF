@@ -94,6 +94,7 @@ void User::attackInput()
     if (Input::Get::Key::Press(VK_LBUTTON))
     {
         player->createMissile(getMouseX(),getMouseY());
+        int a=0;
     }
 }
 

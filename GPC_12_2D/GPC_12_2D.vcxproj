@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Attack.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="ButtonManager.cpp" />
     <ClCompile Include="Demo.cpp" />
@@ -29,9 +28,12 @@
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="GameEnd.cpp" />
     <ClCompile Include="GameStart.cpp" />
+    <ClCompile Include="Goblin.cpp" />
+    <ClCompile Include="GobSlash.cpp" />
     <ClCompile Include="Initialize.cpp" />
     <ClCompile Include="Melee.cpp" />
     <ClCompile Include="Missile.cpp" />
+    <ClCompile Include="MissileA.cpp" />
     <ClCompile Include="MushMissile.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="Pet.cpp" />
@@ -44,7 +46,6 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Agent.h" />
-    <ClInclude Include="Attack.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="ButtonManager.h" />
     <ClInclude Include="Direction.h" />
@@ -68,9 +69,12 @@
     <ClInclude Include="GameEnd.h" />
     <ClInclude Include="GameStart.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="Goblin.h" />
+    <ClInclude Include="GobSlash.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Melee.h" />
     <ClInclude Include="Missile.h" />
+    <ClInclude Include="MissileA.h" />
     <ClInclude Include="MushMissile.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="Pet.h" />

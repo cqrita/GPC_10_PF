@@ -62,11 +62,26 @@ void Enemy::Start()
         attackDuration = attackTime;
         attack = false;
     }
+    {
+        deathDuration = deathConst;
+        deathState = false;
+    }
 }
 
 void Enemy::Update()
 {
-    if (!attack)
+    if (health <= 0)
+    {
+        deathState = true;
+    }
+    if (deathState)
+    {
+        skin.Name = "Animation/Mushroom/Death";
+        skin.Repeatable = false;
+        skin.Duration = 1.0f;
+
+    }
+    else if (!attack)
     {
         this->move();
         skin.Name = "Animation/Mushroom/Run";
@@ -80,9 +95,8 @@ void Enemy::Update()
     {
         skin.Name = "Animation/Mushroom/Attack";
     }
-    if (attackCoolFlag == false)
+    if (attackCoolFlag == false&& Length(player - skin.Location)<500)
     {
-
         attackCoolFlag = true;
         attack = true;
     }
@@ -112,13 +126,22 @@ void Enemy::Update()
     {
         attackDuration -= Engine::Time::Get::Delta();
     }
-    if (attackDuration < 0)
+    if (attackDuration < 0&&(!deathState))
     {
         this->createMissile(player[0], player[1]);
         attackDuration = attackTime;
         attack = false;
     }
 
+    if (deathState)
+    {
+        deathDuration -= Engine::Time::Get::Delta();
+    }
+    if (deathDuration < 0)
+    {
+        state = 0;
+        this->End();
+    }
 
     {
         body.Center.x = skin.Location[0];
@@ -188,12 +211,6 @@ void Enemy::misCollide(Missile* missile)
     {
         health = health - missile->damage;
     }
-    if (health <= 0)
-    {
-        state = 0;
-        this->End();
-    }
-        
 }
 
 void Enemy::entCollide(Agent* agent)

@@ -1,9 +1,9 @@
-#include "PetMissile.h"
+#include "MissileA.h"
 #include "Engine/Time.h"
-void PetMissile::Start()
+void MissileA::Start()
 {
 	{
-		skin.Name = "Animation/Black/Bulletc";
+		skin.Name = "Animation/Black/Rocket";
 
 
 		skin.Length = Vector<2>(10, 10);
@@ -28,7 +28,7 @@ void PetMissile::Start()
 	duration = 0;
 }
 
-void PetMissile::Update()
+void MissileA::Update()
 {
 	this->moveUpdate();
 	duration += Engine::Time::Get::Delta();
@@ -46,9 +46,10 @@ void PetMissile::Update()
 	}
 }
 
-PetMissile::PetMissile(float angle, Vector<2> location, Vector<2> user)
+MissileA::MissileA(float angle, Vector<2> location, Vector<2> user)
 {
 	this->angle = angle;
 	this->skin.Location = location;
 	this->enemy = user;
 }
+

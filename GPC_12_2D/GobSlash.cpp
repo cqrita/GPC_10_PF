@@ -1,12 +1,12 @@
-#include "PetMissile.h"
+#include "GobSlash.h"
 #include "Engine/Time.h"
-void PetMissile::Start()
+void GobSlash::Start()
 {
 	{
-		skin.Name = "Animation/Black/Bulletc";
+		skin.Name = "Animation/Goblin/Slash";
 
 
-		skin.Length = Vector<2>(10, 10);
+		skin.Length = Vector<2>(50, 50);
 
 	}
 	{
@@ -17,7 +17,9 @@ void PetMissile::Start()
 		box.Length = skin.Length;
 
 	}
-
+	{
+		damage = 1;
+	}
 
 	{
 		speed = 1000;
@@ -28,11 +30,11 @@ void PetMissile::Start()
 	duration = 0;
 }
 
-void PetMissile::Update()
+void GobSlash::Update()
 {
 	this->moveUpdate();
 	duration += Engine::Time::Get::Delta();
-	if (distance > 500 || duration > 1000)
+	if (distance > 150 || duration > 1000)
 	{
 		state = 0;
 	}
@@ -46,7 +48,7 @@ void PetMissile::Update()
 	}
 }
 
-PetMissile::PetMissile(float angle, Vector<2> location, Vector<2> user)
+GobSlash::GobSlash(float angle, Vector<2> location, Vector<2> user)
 {
 	this->angle = angle;
 	this->skin.Location = location;

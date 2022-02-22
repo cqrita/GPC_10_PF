@@ -5,7 +5,8 @@
 #include <cstdlib>
 #include "Engine/Input.h"
 #include "Player.h"
-#include "Enemy.h"
+#include "Mushroom.h"
+#include "Goblin.h"
 #include "GameEnd.h"
 #include <string>
 void Field::Start()
@@ -49,22 +50,31 @@ Scene* Field::Update()
     background.Render();
     
     
-    if (enemies.size()<3)
+    if (enemies.size()<5)
     {
         int x = rand() % (bkWidth*2)- bkWidth;
         int y = rand() % (bkHeight*2)-bkHeight;
         if (!((x > user->camera.Location[0] - camWidth && x < user->camera.Location[0] + camWidth) && (y > user->camera.Location[1] - camHeight && y < user->camera.Location[1] + camHeight)))
         {
             Vector<2> enemyLoc = Vector<2>(x, y);
-
-            Enemy* enemy = new Enemy();
-
-            enemies.push_back(enemy);
-            entityManager->addEnemy(enemy);
-            enemy->Start();
-            enemy->skin.Location = enemyLoc;
-        }
-        
+            int a = rand() % 2;
+            if (a == 0)
+            {
+                Mushroom* enemy = new Mushroom();
+                enemies.push_back(enemy);
+                entityManager->addEnemy(enemy);
+                enemy->Start();
+                enemy->skin.Location = enemyLoc;
+            }
+            else
+            {
+                Goblin* enemy = new Goblin();
+                enemies.push_back(enemy);
+                entityManager->addEnemy(enemy);
+                enemy->Start();
+                enemy->skin.Location = enemyLoc;
+            }            
+        }        
     }
     for (auto e = enemies.begin(); e != enemies.end() && !enemies.empty();)
     {

@@ -1,12 +1,12 @@
-#include "Mushroom.h"
+#include "Goblin.h"
 #include <string>
 #include "Global.h"
 #include "Engine/Time.h"
-#include "MushMissile.h"
-void Mushroom::Start()
+#include "GobSlash.h"
+void Goblin::Start()
 {
     {
-        skin.Name = "Animation/Mushroom/Run";
+        skin.Name = "Animation/Goblin/Run";
         skin.Duration = 0.5f;
         skin.Repeatable = true;
 
@@ -19,7 +19,7 @@ void Mushroom::Start()
         box.Length = Vector<2>(50, 66);
     }
     {
-        constSpeed = 100;
+        constSpeed = 400;
         direction = Dir::I;
     }
 
@@ -68,7 +68,7 @@ void Mushroom::Start()
     }
 }
 
-void Mushroom::Update()
+void Goblin::Update()
 {
     if (health <= 0)
     {
@@ -76,25 +76,26 @@ void Mushroom::Update()
     }
     if (deathState)
     {
-        skin.Name = "Animation/Mushroom/Death";
+        skin.Name = "Animation/Goblin/Death";
         skin.Repeatable = false;
     }
     else if (!attack)
     {
         this->move();
-        skin.Name = "Animation/Mushroom/Run";
+        skin.Name = "Animation/Goblin/Run";
     }
     else if (colState)
     {
         this->move();
-        skin.Name = "Animation/Mushroom/Attack";
+        skin.Name = "Animation/Goblin/Attack";
     }
     else
     {
-        skin.Name = "Animation/Mushroom/Attack";
+        skin.Name = "Animation/Goblin/Attack";
     }
-    if (attackCoolFlag == false && Length(player - skin.Location) < 500)
+    if (attackCoolFlag == false && Length(player - skin.Location) < 80 && (!deathState))
     {
+        this->createMissile(player[0], player[1]);
         attackCoolFlag = true;
         attack = true;
     }
@@ -126,7 +127,6 @@ void Mushroom::Update()
     }
     if (attackDuration < 0 && (!deathState))
     {
-        this->createMissile(player[0], player[1]);
         attackDuration = attackTime;
         attack = false;
     }
@@ -187,17 +187,15 @@ void Mushroom::Update()
             m = missiles.erase(m);
         }
     }
-
-
 }
 
-void Mushroom::createMissile(float x, float y)
+void Goblin::createMissile(float x, float y)
 {
     Vector<2> mouse = { x - skin.Location[0],y - skin.Location[1] };
     float angle = atan2f(mouse[1], mouse[0]) * (180.0f / 3.14159265f);
 
     Vector<2> location = Normalize(mouse) * 30 + skin.Location;
-    MushMissile* missile = new MushMissile(angle, location, mouse);
+    GobSlash* missile = new GobSlash(angle, location, mouse);
     missiles.push_back(missile);
     missile->Start();
 }

@@ -8,6 +8,7 @@
 #include "EntityManager.h"
 #include "User.h"
 #include "Enemy.h"
+#include "Item.h"
 class Field final : public Scene
 {
 public:
@@ -17,7 +18,7 @@ public:
 
 private:
    
-
+    std::vector<Item*> items;
     std::vector<Enemy*> enemies;
     Engine::Rendering::Image::Component background;
     Engine::Rendering::Text::Component UI;

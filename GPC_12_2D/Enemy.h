@@ -33,7 +33,6 @@ public:
     Vector<2> cam;
     Vector<2> player;
     int damage = 1;
-    int health;
 
     Engine::Rendering::Text::Component healthText;
     enum class MoveState

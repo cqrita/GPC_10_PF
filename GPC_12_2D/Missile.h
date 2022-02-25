@@ -14,6 +14,7 @@ public:
     void moveUpdate();
     void getEnemy(Vector<2> location);
     float changeAngle();
+    void getDamage(int damage);
     Missile();
     ~Missile();
     Missile(float angle,Vector<2> location , Vector<2> user);

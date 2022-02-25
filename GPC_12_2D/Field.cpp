@@ -87,11 +87,60 @@ Scene* Field::Update()
         }
         else
         {
+            Item* item = new Item();
+            items.push_back(item);
+            entityManager->addItem(item);
+            item->skin.Location = (*e)->skin.Location;
+            item->Start();
+            player->getExp(1);
             (*e)->End();
             e = enemies.erase(e);
             enemyCount = enemyCount + 1;
         }
     }
+
+    if (items.size() < 3)
+    {
+        int x = rand() % (bkWidth * 2) - bkWidth;
+        int y = rand() % (bkHeight * 2) - bkHeight;
+        if (!((x > user->camera.Location[0] - camWidth && x < user->camera.Location[0] + camWidth) && (y > user->camera.Location[1] - camHeight && y < user->camera.Location[1] + camHeight)))
+        {
+            Vector<2> itemLoc = Vector<2>(x, y);
+            Item* item = new Item();
+            items.push_back(item);
+            entityManager->addItem(item);
+            item->skin.Location = itemLoc;
+            item->Start();
+        }
+    }
+    for (auto e = items.begin(); e != items.end() && !items.empty();)
+    {
+        if ((*e)->state > 0)
+        {                       
+            if (items.size() > 15)
+            {
+                (*e)->End();
+                e = items.erase(e);
+            }
+            else
+            {
+                (*e)->getCam(user->camera.Location);
+                (*e)->Update();
+                ++e;
+            }
+            
+        }
+        else
+        {
+            (*e)->End();
+            e = items.erase(e);
+        }
+    }
+
+
+
+
+
     entityManager->Update();
     user->Update();
 
@@ -106,6 +155,9 @@ Scene* Field::Update()
     {
         return new GameEnd(enemyCount);
     }
+
+
+    
 
     return nullptr;
 }

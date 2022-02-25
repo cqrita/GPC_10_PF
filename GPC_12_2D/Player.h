@@ -7,11 +7,12 @@
 #include "Engine/Rendering.h"
 #include "Missile.h"
 #include "Pet.h"
+#include "Item.h"
 static const int playerWidth = 25;
 static const int playerHeight = 33;
 static const float attackConst = 10.0f;
 static const float runConst = 0.2f;
-
+static const float itemConst = 0.5f;
 
 
 class Player final : public Agent
@@ -33,21 +34,33 @@ public:
     void moveUpdateM();
     void createPet();
 
+    void getItem(Item* item);
+
+    void getExp(int value);
+    void lvlUp();
 
 public:
     std::vector<Pet*> pets;
     std::vector<Missile*> missiles;
     Engine::Rendering::Animation::Component skin;
     Engine::Rendering::Animation::Component muzzle;
+    Engine::Rendering::Animation::Component item;
     Engine::Rendering::Image::Component     box;
+    Engine::Rendering::Text::Component levelImage;
+
+
     float attackSpeed = 100.0f;
     float runCooltime = 1.0f;
     float walkSpeed = 400;
     float runSpeed = 1000; 
+    int damage = 10;
     Vector<2> cam;
 
-    int health;
     int petNum;
+
+    float level;
+    float exp;
+
 
 private:   
     
@@ -65,6 +78,10 @@ private:
     Engine::Rendering::Image::Component bar;
     Engine::Rendering::Image::Component barBorder;
 
+    Engine::Rendering::Image::Component lvlprogressBar;
+    Engine::Rendering::Image::Component lvlbar;
+    Engine::Rendering::Image::Component lvlbarBorder;
+
 
     float speed;
     float attackDuration;
@@ -80,4 +97,7 @@ private:
 
     float colDuration = colConst;
     bool colState = false;
+
+    float itemDuration = itemConst;
+    bool itemState = false;
 };

@@ -98,6 +98,11 @@ float Missile::changeAngle()
 	return atan2f(loc[1], loc[0]) * (180.0f / 3.14159265f);
 }
 
+void Missile::getDamage(int damage)
+{
+	this->damage = damage;
+}
+
 Missile::Missile()
 {
 

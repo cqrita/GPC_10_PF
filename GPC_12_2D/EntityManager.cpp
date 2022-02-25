@@ -12,6 +12,7 @@ void EntityManager::Update()
 	this->entCollision();
 	this->misCollision();
 	this->eneMisCollision();
+	this->itemCollision();
 	this->checkState();
 }
 
@@ -95,6 +96,24 @@ void EntityManager::eneMisCollision()
 	}
 }
 
+void EntityManager::itemCollision()
+{
+	for (Player* player : players)
+	{
+		for (Item* item : items)
+		{
+			if (item->state == 1)
+			{
+				if (player->body.Collide(item->body))
+				{
+					item->onCollide();
+					player->getItem(item);
+				}
+			}			
+		}
+	}
+}
+
 MeleeMouse EntityManager::mouseCollision(float x, float y)
 {
 	for (Enemy* enemy : enemies)
@@ -133,6 +152,11 @@ void EntityManager::addEnemy(Enemy* enemy)
 	this->addAgent(enemy);
 }
 
+void EntityManager::addItem(Item* item)
+{
+	items.push_back(item);
+}
+
 void EntityManager::checkState()
 {
 	for (auto a = agents.begin(); a != agents.end() && !agents.empty();)
@@ -146,5 +170,15 @@ void EntityManager::checkState()
 			a = agents.erase(a);
 		}
 	}
-	
+	for (auto a = items.begin(); a != items.end() && !items.empty();)
+	{
+		if ((*a)->state ==1 )
+		{
+			++a;
+		}
+		else
+		{
+			a = items.erase(a);
+		}
+	}
 }

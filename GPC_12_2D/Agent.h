@@ -14,6 +14,7 @@ public:
     virtual void entCollide(Agent* agent) abstract;
 public:
     Engine::Physics::Component<Quadrangle> body;
-    int health = 100;
+    float health;
+    float maxHealth;
     int state = 0;
 };

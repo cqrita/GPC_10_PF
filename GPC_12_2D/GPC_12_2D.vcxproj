@@ -31,10 +31,10 @@
     <ClCompile Include="Goblin.cpp" />
     <ClCompile Include="GobSlash.cpp" />
     <ClCompile Include="Initialize.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Melee.cpp" />
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="MissileA.cpp" />
-    <ClCompile Include="MissileManager.cpp" />
     <ClCompile Include="MushMissile.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="Pet.cpp" />
@@ -77,7 +77,6 @@
     <ClInclude Include="Melee.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="MissileA.h" />
-    <ClInclude Include="MissileManager.h" />
     <ClInclude Include="MushMissile.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="Pet.h" />

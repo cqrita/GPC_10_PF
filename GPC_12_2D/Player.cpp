@@ -33,7 +33,13 @@ void Player::Start()
         direction = Dir::I;
     }
     {
-        health = 100;
+        maxHealth = 100;
+        health = maxHealth;
+        damage = 10;
+    }
+    {
+        level = 1;
+        exp = 0;
     }
     {
         healthText.Font.Name = "Font/arial";
@@ -47,6 +53,16 @@ void Player::Start()
     {
         colDuration = colConst;
         colState = false;
+    }
+    {
+        itemDuration = itemConst;
+        itemState = false;
+    }
+    {
+        item.Name = "Animation/Chest/Missile";
+
+        item.Length = Vector<2>(40, 40);
+        item.Location = skin.Location;
     }
     {
         petNum = 1;
@@ -69,7 +85,7 @@ void Player::Start()
     }
     {
         progressBar.Name = "Image/ProgressBar";
-        float health = this->health * 0.01f;
+        float health = this->health / maxHealth;
         progressBar.Length = Vector<2>(60 * health, 10);
         progressBar.Location[0] = skin.Location[0] + (60 * health) / 2 - 30;
         progressBar.Location[1] = skin.Location[1] - 40;
@@ -80,6 +96,35 @@ void Player::Start()
         barBorder.Location[0] = skin.Location[0];
         barBorder.Location[1] = skin.Location[1] - 40;
     }
+
+    {
+        lvlbar.Name = "Image/lvlBar";
+        lvlbar.Length = Vector<2>(camWidth*2, 20);
+        lvlbar.Location[0] = cam[0];
+        lvlbar.Location[1] = cam[1]+camHeight-30;
+    }
+    {
+        lvlprogressBar.Name = "Image/lvlProgressBar";
+        float exp = this->exp / (10 *100);
+        lvlprogressBar.Length = Vector<2>(camWidth*2 * exp, 20);
+        lvlprogressBar.Location[0] = cam[0] + (camWidth * 2 * exp) / 2 - camWidth;
+        lvlprogressBar.Location[1] = cam[1] + camHeight- 30;
+    }
+    {
+        lvlbarBorder.Name = "Image/lvlProgressBarBorder";
+        lvlbar.Length = Vector<2>(camWidth * 2, 20);
+        lvlbarBorder.Location[0] = cam[0];
+        lvlbarBorder.Location[1] = cam[1] + camHeight- 30;
+    }
+
+    levelImage.Font.Name = "Font/arial";
+    levelImage.Font.Size = 30;
+    levelImage.Length = Vector<2>(50, 50) * 2;
+    levelImage.Location[0] = camWidth*2-100;
+    levelImage.Location[1] = 100;
+    auto countStr = std::to_string(static_cast<int>(level));
+    levelImage.Text = countStr.c_str();
+
     {
         state = 1;
     }
@@ -135,12 +180,29 @@ void Player::Update()
         colState = false;
     }
 
+    if (itemState)
+    {
+        itemDuration -= Engine::Time::Get::Delta();
+    }
+    if (itemDuration < 0)
+    {
+        itemDuration = itemConst;
+        itemState = false;
+    }
+
+
+
 
     {
         healthText.Location[0] = skin.Location[0] - cam[0] + camWidth + 30;
         healthText.Location[1] = -skin.Location[1] + cam[1] + camHeight + 80;
         auto healthString = std::to_string(health);
         healthText.Text = healthString.c_str();
+    }
+    {
+        auto countStr = std::to_string(static_cast<int>(level));
+        levelImage.Text = countStr.c_str();
+        levelImage.Render();
     }
     {
         skin.Render();
@@ -153,7 +215,7 @@ void Player::Update()
         bar.Render();
     }
     {
-        float health = this->health * 0.01f;
+        float health = this->health / maxHealth;
         progressBar.Length = Vector<2>(60 * health, 10);
         progressBar.Location[0] = skin.Location[0] + (60 * health) / 2 - 30;
         progressBar.Location[1] = skin.Location[1] - 40;
@@ -163,6 +225,35 @@ void Player::Update()
         barBorder.Location[0] = skin.Location[0];
         barBorder.Location[1] = skin.Location[1] - 40;
         barBorder.Render();
+    }
+
+
+    this->lvlUp();
+    {        
+        lvlbar.Location[0] = cam[0];
+        lvlbar.Location[1] = cam[1] + camHeight - 30;
+        lvlbar.Render();
+    }
+    {
+        float exp = this->exp / (level * 10);
+        lvlprogressBar.Length = Vector<2>(camWidth * 2 * exp, 20);
+        lvlprogressBar.Location[0] = cam[0] + (camWidth * 2 * exp) / 2 - camWidth;
+        lvlprogressBar.Location[1] = cam[1] + camHeight - 30;
+        lvlprogressBar.Render();
+    }
+    {
+        lvlbarBorder.Location[0] = cam[0];
+        lvlbarBorder.Location[1] = cam[1] + camHeight - 30;
+        lvlbarBorder.Render();
+    }
+
+    {
+        if (itemState)
+        {
+            item.Location = skin.Location;
+            item.Location[1] += 60;
+            item.Render();
+        }
     }
     
 	for (auto m=missiles.begin(); m != missiles.end()&&!missiles.empty();)
@@ -243,6 +334,7 @@ void Player::createMissile(float x, float y)
         MissileA* missile = new MissileA(angle, location,mouse);
         missiles.push_back(missile);
         missile->Start();
+        missile->getDamage(this->damage);
         attackTime = true;
 
         muzzle.Location = Normalize(Vector<2>(mouse[0], 0)) * 20 + skin.Location;
@@ -483,5 +575,42 @@ void Player::createPet()
         pet->skin.Location = location;
         pets.push_back(pet);
         pet->Start();
+    }
+}
+
+void Player::getItem(Item* item)
+{
+    if (item->itemValue == Item::ItemValue::Health)
+    {
+        this->item.Name = "Animation/Chest/Health";
+        if (this->health + item->itemNum < 100)
+        {
+            this->health += item->itemNum;
+        }
+        else
+        {
+            this->health = 100;
+        }
+    }
+    else if (item->itemValue == Item::ItemValue::MissilePower)
+    {
+        this->item.Name = "Animation/Chest/Missile";
+        damage += item->itemNum;
+    }
+    itemState = true;
+    itemDuration = itemConst;
+}
+
+void Player::getExp(int value)
+{
+    exp += value;
+}
+
+void Player::lvlUp()
+{
+    if (exp >= level * 10)
+    {
+        ++level;
+        exp = 0;
     }
 }

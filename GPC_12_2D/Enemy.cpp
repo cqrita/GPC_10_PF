@@ -25,7 +25,8 @@ void Enemy::Start()
     }
 
     {
-        health = 100;
+        maxHealth = 100;
+        health = maxHealth;
     }
     {
         bar.Name = "Image/Bar";
@@ -35,7 +36,7 @@ void Enemy::Start()
     }
     {
         progressBar.Name = "Image/ProgressBar";
-        float health = this->health * 0.01f;
+        float health = this->health / maxHealth;
         progressBar.Length = Vector<2>(60 * health, 10);
         progressBar.Location[0] = skin.Location[0] + (60 * health) / 2 - 30;
         progressBar.Location[1] = skin.Location[1] - 40;
@@ -164,7 +165,7 @@ void Enemy::Update()
         bar.Render();
     }
     {
-        float health = this->health * 0.01f;
+        float health = this->health / maxHealth;
         progressBar.Length = Vector<2>(60 * health, 10);
         progressBar.Location[0] = skin.Location[0] + (60 * health) / 2 - 30;
         progressBar.Location[1] = skin.Location[1] - 40;

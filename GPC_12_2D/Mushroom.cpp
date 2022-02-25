@@ -66,6 +66,7 @@ void Mushroom::Start()
     {
         deathDuration = deathConst;
         deathState = false;
+        exp = false;
     }
 }
 

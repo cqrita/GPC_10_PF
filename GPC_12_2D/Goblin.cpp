@@ -66,6 +66,7 @@ void Goblin::Start()
     {
         deathDuration = deathConst;
         deathState = false;
+        exp = false;
     }
 }
 

@@ -83,7 +83,13 @@ Scene* Field::Update()
             (*e)->moveUpdate(player->skin.Location);
             (*e)->getCam(user->camera.Location);
             (*e)->Update();
+            if ((*e)->deathState && !(*e)->exp)
+            {
+                player->getExp(1);
+                (*e)->exp = true;
+            }
             ++e;
+            
         }
         else
         {
@@ -92,7 +98,7 @@ Scene* Field::Update()
             entityManager->addItem(item);
             item->skin.Location = (*e)->skin.Location;
             item->Start();
-            player->getExp(1);
+            
             (*e)->End();
             e = enemies.erase(e);
             enemyCount = enemyCount + 1;

@@ -30,8 +30,7 @@ void EntityManager::entCollision()
 		body.Length.y += 30;
 		for (Agent* agent : agents)
 		{		
-			if (agent == player) continue;
-
+			if (agent == player) continue; 
 			if (agent->body.Collide(body))
 			{
 				player->entCollide(agent);

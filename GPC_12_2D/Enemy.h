@@ -60,4 +60,5 @@ public:
 
     float deathDuration;
     bool deathState;
+    bool exp = false;
 };

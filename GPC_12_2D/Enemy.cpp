@@ -66,6 +66,7 @@ void Enemy::Start()
     {
         deathDuration = deathConst;
         deathState = false;
+        exp = false;
     }
 }
 

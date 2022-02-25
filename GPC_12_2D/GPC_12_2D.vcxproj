@@ -26,6 +26,8 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Field.cpp" />
+    <ClCompile Include="FlyingEye.cpp" />
+    <ClCompile Include="FlySlash.cpp" />
     <ClCompile Include="GameEnd.cpp" />
     <ClCompile Include="GameStart.cpp" />
     <ClCompile Include="Goblin.cpp" />
@@ -67,6 +69,8 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Field.h" />
+    <ClInclude Include="FlyingEye.h" />
+    <ClInclude Include="FlySlash.h" />
     <ClInclude Include="GameEnd.h" />
     <ClInclude Include="GameStart.h" />
     <ClInclude Include="Global.h" />

@@ -28,9 +28,8 @@ void EntityManager::entCollision()
 		Engine::Physics::Component<Quadrangle> body = player->body;
 		body.Length.x += 30;
 		body.Length.y += 30;
-		for (Agent* agent : agents)
+		for (Enemy* agent : enemies)
 		{		
-			if (agent == player) continue; 
 			if (agent->body.Collide(body))
 			{
 				player->entCollide(agent);
@@ -42,15 +41,14 @@ void EntityManager::entCollision()
 
 void EntityManager::misCollision()
 {
-	for (Agent* agent : agents)
+	for (Enemy* agent : enemies)
 	{
 		for (Player* player : players)
 		{						
 			for (Missile* missile : player->missiles)
 			{
-				if (agent == player) continue;
 								
-				if (agent->body.Collide(missile->body))
+				if (agent->body.Collide(missile->body)&&!agent->deathState)
 				{
 					agent->misCollide(missile);
 					missile->duration = 1000;
@@ -58,11 +56,10 @@ void EntityManager::misCollision()
 			}
 			for (Pet* pet : player->pets)
 			{
-				if (agent == player) continue;
 				pet->getEnemy(Vector<2>(agent->body.Center.x, agent->body.Center.y));
 				for (Missile* missile : pet->missiles)
 				{					
-					if (agent->body.Collide(missile->body))
+					if (agent->body.Collide(missile->body) && !agent->deathState)
 					{
 						agent->misCollide(missile);
 						missile->duration = 1000;
@@ -178,6 +175,17 @@ void EntityManager::checkState()
 		else
 		{
 			a = items.erase(a);
+		}
+	}
+	for (auto a = enemies.begin(); a != enemies.end() && !enemies.empty();)
+	{
+		if ((*a)->state == 1)
+		{
+			++a;
+		}
+		else
+		{
+			a = enemies.erase(a);
 		}
 	}
 }

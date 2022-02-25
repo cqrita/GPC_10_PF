@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Mushroom.h"
 #include "Goblin.h"
+#include "FlyingEye.h"
 #include "GameEnd.h"
 #include <string>
 void Field::Start()
@@ -57,10 +58,18 @@ Scene* Field::Update()
         if (!((x > user->camera.Location[0] - camWidth && x < user->camera.Location[0] + camWidth) && (y > user->camera.Location[1] - camHeight && y < user->camera.Location[1] + camHeight)))
         {
             Vector<2> enemyLoc = Vector<2>(x, y);
-            int a = rand() % 2;
+            int a = rand() % 3;
             if (a == 0)
             {
                 Mushroom* enemy = new Mushroom();
+                enemies.push_back(enemy);
+                entityManager->addEnemy(enemy);
+                enemy->Start();
+                enemy->skin.Location = enemyLoc;
+            }
+            else if (a == 1)
+            {
+                FlyingEye* enemy = new FlyingEye();
                 enemies.push_back(enemy);
                 entityManager->addEnemy(enemy);
                 enemy->Start();

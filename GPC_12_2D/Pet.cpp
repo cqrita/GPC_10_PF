@@ -111,10 +111,14 @@ void Pet::createMissile(float x, float y)
 
 void Pet::getEnemy(Vector<2> location)
 {
-    if (Length(skin.Location - enemy) > Length(skin.Location - location) && Length(skin.Location - location) < 400)
+    if (Length(skin.Location - enemy) > Length(skin.Location - location))
     {
         enemy = location;
-        this->createMissile(location[0],location[1]);
+        
+    }
+    if (Length(skin.Location - enemy) < 400)
+    {
+        this->createMissile(location[0], location[1]);
     }
 }
 

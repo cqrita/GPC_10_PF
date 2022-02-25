@@ -85,7 +85,7 @@ void Missile::moveUpdate()
 
 void Missile::getEnemy(Vector<2> location)
 {
-	if (Length(skin.Location - enemy) > Length(skin.Location - location)&& Length(skin.Location - location)<400)
+	if (Length(skin.Location - enemy) > Length(skin.Location - location)&& Length(skin.Location - location)<300)
 	{
 		enemy = location;
 		EnemyHoming = true;
@@ -95,7 +95,15 @@ void Missile::getEnemy(Vector<2> location)
 float Missile::changeAngle()
 {
 	Vector<2> loc = { enemy[0] - skin.Location[0],enemy[1] - skin.Location[1] };
-	return atan2f(loc[1], loc[0]) * (180.0f / 3.14159265f);
+	if (Length(loc) > 0.1f)
+	{
+		return atan2f(loc[1], loc[0]) * (180.0f / 3.14159265f);
+	}
+	else
+	{
+		EnemyHoming = false;
+		return atan2f(loc[1], loc[0]) * (180.0f / 3.14159265f);
+	}
 }
 
 void Missile::getDamage(int damage)

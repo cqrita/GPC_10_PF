@@ -526,7 +526,10 @@ void Player::moveUpdateM()
         {
             skin.Name = "Animation/Black/Crouch";
             skin.Repeatable = false;
-            skin.Playback = 0.4f;
+            if (skin.Playback >= 0.4f)
+            {
+                skin.Playback = 0.4f;
+            }           
         }
         else
         {

@@ -5,6 +5,7 @@
 #include "Engine/Quadrangle.h"
 #include "Engine/Physics.h"
 #include "Engine/Rendering.h"
+#include "Engine/Sound.h"
 #include "Missile.h"
 #include "Pet.h"
 #include "Item.h"
@@ -47,7 +48,7 @@ public:
     Engine::Rendering::Animation::Component item;
     Engine::Rendering::Image::Component     box;
     Engine::Rendering::Text::Component levelImage;
-
+    Engine::Sound::Effect::Component Shoot;
 
     float attackSpeed = 100.0f;
     float runCooltime = 1.0f;

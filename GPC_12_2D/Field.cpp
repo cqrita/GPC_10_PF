@@ -39,15 +39,17 @@ void Field::Start()
         user->getEntityManager(entityManager);
         entityManager->addPlayer(player);
     }
+    {
+        battle.Name = "Sound/expansion";
+        battle.Start();
+        battle.Music();
+    }
 }
 
 Scene* Field::Update()
 {
     using namespace Engine;
-    
-    
-    
-
+        
     background.Render();
     
     
@@ -179,6 +181,8 @@ Scene* Field::Update()
 
 void Field::End()
 {
+    battle.Stop();
+    battle.End();
     entityManager->End();
     delete entityManager;
     user->End();

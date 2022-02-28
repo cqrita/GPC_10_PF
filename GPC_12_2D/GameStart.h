@@ -3,6 +3,8 @@
 #include "Button.h"
 #include "ButtonManager.h"
 #include "Engine/Rendering.h"
+#include "Engine/Sound.h"
+
 class GameStart final : public Scene
 {
 public:
@@ -15,4 +17,6 @@ public:
     Engine::Rendering::Camera camera;
     Engine::Rendering::Image::Component background;
     Engine::Rendering::Text::Component startText;
+    Engine::Sound::Effect::Component menu;
+
 };

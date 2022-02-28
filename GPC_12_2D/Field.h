@@ -3,6 +3,7 @@
 #include "Engine/Rendering.h"
 #include "Engine/Physics.h"
 #include "Engine/Circle.h"
+#include "Engine/Sound.h"
 #include "Player.h"
 #include "Scene.h"
 #include "EntityManager.h"
@@ -22,9 +23,11 @@ private:
     std::vector<Enemy*> enemies;
     Engine::Rendering::Image::Component background;
     Engine::Rendering::Text::Component UI;
+    Engine::Sound::Effect::Component battle;
     int enemyCount;
     User* user = nullptr;
     EntityManager* entityManager = nullptr;
     Player* player = nullptr;
     Engine::Rendering::Camera camera;
+    bool music;
 };

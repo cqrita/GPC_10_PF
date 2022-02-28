@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "Button.h"
 #include "ButtonManager.h"
+#include "Engine/Sound.h"
 
 class GameEnd final : public Scene
 {
@@ -20,4 +21,6 @@ public:
     Engine::Rendering::Image::Component background;
     Engine::Rendering::Text::Component scoreText;
     Engine::Rendering::Text::Component endText;
+    Engine::Sound::Effect::Component menu;
+
 };

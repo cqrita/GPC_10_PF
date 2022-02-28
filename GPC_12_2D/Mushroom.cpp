@@ -68,13 +68,22 @@ void Mushroom::Start()
         deathState = false;
         exp = false;
     }
+    {
+        hitSound.Name = "Sound/Hit";
+        hitSound.Start();
+    }
+    {
+        deathSound.Name = "Sound/Explosion";
+        deathSound.Start();
+    }
 }
 
 void Mushroom::Update()
 {
-    if (health <= 0)
+    if (health <= 0&&!deathState)
     {
         deathState = true;
+        deathSound.Play();
     }
     if (deathState)
     {

@@ -20,6 +20,12 @@ void GameStart::Start()
 	start = new Button("Image/startIdle", 200, 50, camWidth, camHeight);
 	end = new Button("Image/quitIdle", 200, 50, camWidth, camHeight + 100);
 	buttonmanager = new ButtonManager();
+	{
+		menu.Name = "Sound/Menu";
+		menu.Volume = -1000;
+		menu.Start();
+		menu.Music();
+	}
 }
 
 Scene* GameStart::Update()
@@ -45,6 +51,8 @@ Scene* GameStart::Update()
 
 void GameStart::End()
 {
+	menu.Stop();
+	menu.End();
 	delete start;
 	delete end;
 	delete buttonmanager;

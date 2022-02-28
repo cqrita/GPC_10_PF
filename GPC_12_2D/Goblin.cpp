@@ -68,12 +68,25 @@ void Goblin::Start()
         deathState = false;
         exp = false;
     }
+    {
+        attackSound.Name = "Sound/Swoosh";
+        attackSound.Start();
+    }
+    {
+        hitSound.Name = "Sound/Hit";
+        hitSound.Start();
+    }
+    {
+        deathSound.Name = "Sound/Explosion";
+        deathSound.Start();
+    }
 }
 
 void Goblin::Update()
 {
-    if (health <= 0)
+    if (health <= 0 && !deathState)
     {
+        deathSound.Play();
         deathState = true;
     }
     if (deathState)
@@ -200,4 +213,18 @@ void Goblin::createMissile(float x, float y)
     GobSlash* missile = new GobSlash(angle, location, mouse);
     missiles.push_back(missile);
     missile->Start();
+    attackSound.Play();
+}
+
+void Goblin::End()
+{
+    for (auto m = missiles.begin(); m != missiles.end() && !missiles.empty();)
+    {
+        (*m)->End();
+        m = missiles.erase(m);
+    }
+    deathSound.End();
+    attackSound.End();
+    hitSound.End();
+    this->~Goblin();
 }

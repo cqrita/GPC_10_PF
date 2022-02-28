@@ -68,13 +68,22 @@ void Enemy::Start()
         deathState = false;
         exp = false;
     }
+    {
+        hitSound.Name = "Sound/Hit";
+        hitSound.Start();
+    }
+    {
+        deathSound.Name = "Sound/Explosion";
+        deathSound.Start();
+    }
 }
 
 void Enemy::Update()
 {
-    if (health <= 0)
+    if (health <= 0 && !deathState)
     {
         deathState = true;
+        deathSound.Play();
     }
     if (deathState)
     {
@@ -202,6 +211,8 @@ void Enemy::End()
         (*m)->End();
         m = missiles.erase(m);
     }
+    hitSound.End();
+    deathSound.End();
     this->~Enemy();
 }
 
@@ -213,6 +224,7 @@ void Enemy::misCollide(Missile* missile)
     {
         health = health - missile->damage;
     }
+    hitSound.Play();
 }
 
 void Enemy::entCollide(Agent* agent)

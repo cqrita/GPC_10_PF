@@ -17,7 +17,7 @@ namespace Engine
     namespace Input     { void Procedure(HWND const, UINT const, WPARAM const, LPARAM const); }
     namespace Time      { void Procedure(HWND const, UINT const, WPARAM const, LPARAM const); }
     namespace Rendering { void Procedure(HWND const, UINT const, WPARAM const, LPARAM const); }
-
+    namespace Sound     { void Procedure(HWND const, UINT const, WPARAM const, LPARAM const); }
     namespace
     {
         Game * const Portfolio = Initialize();
@@ -30,7 +30,7 @@ namespace Engine
             case WM_CREATE:
             {
                 Rendering::Procedure(hWindow, uMessage, wParameter, lParameter);
-
+                Sound::Procedure(hWindow, uMessage, wParameter, lParameter);
                 Portfolio->Start();
 
                 return 0;
@@ -52,7 +52,7 @@ namespace Engine
                 delete Portfolio;
 
                 Rendering::Procedure(hWindow, uMessage, wParameter, lParameter);
-
+                Sound::Procedure(hWindow, uMessage, wParameter, lParameter);
                 PostQuitMessage(0);
 
                 return 0;

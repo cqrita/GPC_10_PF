@@ -39,15 +39,18 @@ void Field::Start()
         user->getEntityManager(entityManager);
         entityManager->addPlayer(player);
     }
+    {
+        battle.Name = "Sound/Battle";
+        battle.Volume = -1000;
+        battle.Start();
+        battle.Music();
+    }
 }
 
 Scene* Field::Update()
 {
     using namespace Engine;
-    
-    
-    
-
+        
     background.Render();
     
     
@@ -152,10 +155,6 @@ Scene* Field::Update()
         }
     }
 
-
-
-
-
     entityManager->Update();
     user->Update();
 
@@ -170,15 +169,13 @@ Scene* Field::Update()
     {
         return new GameEnd(enemyCount);
     }
-
-
-    
-
     return nullptr;
 }
 
 void Field::End()
 {
+    battle.Stop();
+    battle.End();
     entityManager->End();
     delete entityManager;
     user->End();

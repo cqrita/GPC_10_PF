@@ -6,7 +6,7 @@
 #include "Engine/Physics.h"
 #include "Engine/Rendering.h"
 #include "Missile.h"
-
+#include "Engine/Sound.h"
 static float deathConst=0.5f;
 class Enemy : public Agent
 {
@@ -30,6 +30,9 @@ public:
     Engine::Rendering::Image::Component progressBar;
     Engine::Rendering::Image::Component bar;
     Engine::Rendering::Image::Component barBorder;
+    Engine::Sound::Effect::Component attackSound;
+    Engine::Sound::Effect::Component hitSound;
+    Engine::Sound::Effect::Component deathSound;
     Vector<2> cam;
     Vector<2> player;
     int damage = 1;

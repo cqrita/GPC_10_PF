@@ -128,6 +128,20 @@ void Player::Start()
     {
         state = 1;
     }
+
+    {
+        shoot.Name = "Sound/Blop";
+        shoot.Start();
+    }
+    {
+        walk.Name = "Sound/FOOTSTEPS";
+        walk.Start();
+        walkState = false;
+    }
+    {
+        pickUp.Name = "Sound/PickUp";
+        pickUp.Start();
+    }
 }
 
 void Player::Update()
@@ -228,24 +242,7 @@ void Player::Update()
     }
 
 
-    this->lvlUp();
-    {        
-        lvlbar.Location[0] = cam[0];
-        lvlbar.Location[1] = cam[1] + camHeight - 30;
-        lvlbar.Render();
-    }
-    {
-        float exp = this->exp / (level * 10);
-        lvlprogressBar.Length = Vector<2>(camWidth * 2 * exp, 20);
-        lvlprogressBar.Location[0] = cam[0] + (camWidth * 2 * exp) / 2 - camWidth;
-        lvlprogressBar.Location[1] = cam[1] + camHeight - 30;
-        lvlprogressBar.Render();
-    }
-    {
-        lvlbarBorder.Location[0] = cam[0];
-        lvlbarBorder.Location[1] = cam[1] + camHeight - 30;
-        lvlbarBorder.Render();
-    }
+   
 
     {
         if (itemState)
@@ -275,6 +272,28 @@ void Player::Update()
         (*p)->Update();
         ++p;                
     }
+
+    this->lvlUp();
+    {
+        lvlbar.Location[0] = cam[0];
+        lvlbar.Location[1] = cam[1] + camHeight - 30;
+        lvlbar.Render();
+    }
+    {
+        float exp = this->exp / (level * 10);
+        lvlprogressBar.Length = Vector<2>(camWidth * 2 * exp, 20);
+        lvlprogressBar.Location[0] = cam[0] + (camWidth * 2 * exp) / 2 - camWidth;
+        lvlprogressBar.Location[1] = cam[1] + camHeight - 30;
+        lvlprogressBar.Render();
+    }
+    {
+        lvlbarBorder.Location[0] = cam[0];
+        lvlbarBorder.Location[1] = cam[1] + camHeight - 30;
+        lvlbarBorder.Render();
+    }
+
+
+
 
     attack = false;
     if (health <= 0)
@@ -338,6 +357,7 @@ void Player::createMissile(float x, float y)
         attackTime = true;
 
         muzzle.Location = Normalize(Vector<2>(mouse[0], 0)) * 20 + skin.Location;
+        shoot.Play();
     }
 }
 
@@ -566,6 +586,17 @@ void Player::moveUpdateM()
             skin.Location[1] = location[1];
         }
     }
+    if (moveState != MoveState::idle&&!walkState)
+    {
+        walk.Music();
+        walkState = true;
+    }
+    if (moveState == MoveState::idle)
+    {
+        walk.Stop();
+        walkState = false;
+    }
+
 }
 
 void Player::createPet()
@@ -602,6 +633,7 @@ void Player::getItem(Item* item)
     }
     itemState = true;
     itemDuration = itemConst;
+    pickUp.Play();
 }
 
 void Player::getExp(int value)

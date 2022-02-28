@@ -68,13 +68,26 @@ void FlyingEye::Start()
         deathState = false;
         exp = false;
     }
+    {
+        attackSound.Name = "Sound/Swoosh";
+        attackSound.Start();
+    }
+    {
+        hitSound.Name = "Sound/Hit";
+        hitSound.Start();
+    }
+    {
+        deathSound.Name = "Sound/Explosion";
+        deathSound.Start();
+    }
 }
 
 void FlyingEye::Update()
 {
-    if (health <= 0)
+    if (health <= 0 && !deathState)
     {
         deathState = true;
+        deathSound.Play();
     }
     if (deathState)
     {
@@ -191,6 +204,19 @@ void FlyingEye::Update()
     }
 }
 
+void FlyingEye::End()
+{
+    for (auto m = missiles.begin(); m != missiles.end() && !missiles.empty();)
+    {
+        (*m)->End();
+        m = missiles.erase(m);
+    }
+    attackSound.End();
+    hitSound.End();
+    deathSound.End();
+    this->~FlyingEye();
+}
+
 void FlyingEye::createMissile(float x, float y)
 {
     Vector<2> mouse = { x - skin.Location[0],y - skin.Location[1] };
@@ -200,4 +226,6 @@ void FlyingEye::createMissile(float x, float y)
     FlySlash* missile = new FlySlash(angle, location, mouse);
     missiles.push_back(missile);
     missile->Start();
+    attackSound.Play();
+
 }

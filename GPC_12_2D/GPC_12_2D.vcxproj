@@ -63,6 +63,7 @@
     <ClInclude Include="Engine\Point.h" />
     <ClInclude Include="Engine\Quadrangle.h" />
     <ClInclude Include="Engine\Rendering.h" />
+    <ClInclude Include="Engine\Sound.h" />
     <ClInclude Include="Engine\Time.h" />
     <ClInclude Include="Engine\Vector.h" />
     <ClInclude Include="Demo.h" />

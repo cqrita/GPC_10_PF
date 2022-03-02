@@ -34,6 +34,7 @@
     <ClCompile Include="GobSlash.cpp" />
     <ClCompile Include="Initialize.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="Melee.cpp" />
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="MissileA.cpp" />
@@ -78,6 +79,7 @@
     <ClInclude Include="Goblin.h" />
     <ClInclude Include="GobSlash.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="LevelManager.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Melee.h" />
     <ClInclude Include="Missile.h" />

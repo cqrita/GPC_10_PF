@@ -7,7 +7,6 @@
 #include "Player.h"
 #include "Scene.h"
 #include "EntityManager.h"
-#include "LevelManager.h"
 #include "User.h"
 #include "Enemy.h"
 #include "Item.h"
@@ -28,12 +27,16 @@ private:
     int enemyCount;
     User* user = nullptr;
     EntityManager* entityManager = nullptr;
-    LevelManager* levelManager = nullptr;
     Player* player = nullptr;
     Engine::Rendering::Camera camera;
     bool music;
 
     int stage;
-    float stageConst = 15.0f;
+    float stageConst = 10.0f;
     float stageDuration = stageConst;
+
+    Engine::Rendering::Text::Component stageText;
+    float stageTextConst = 2.0f;
+    float stageTextDuration = stageTextConst;
+    bool stageTextFlag;
 };

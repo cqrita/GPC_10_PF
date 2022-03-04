@@ -211,4 +211,5 @@ void Mushroom::createMissile(float x, float y)
     MushMissile* missile = new MushMissile(angle, location, mouse);
     missiles.push_back(missile);
     missile->Start();
+    missile->getDamage(damage);
 }

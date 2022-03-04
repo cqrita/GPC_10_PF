@@ -285,6 +285,7 @@ void Enemy::createMissile(float x, float y)
     Missile* missile = new Missile(angle, location, mouse);
     missiles.push_back(missile);
     missile->Start();
+    missile->getDamage(damage);
 }
 
 void Enemy::setDamage(int i)
@@ -295,5 +296,6 @@ void Enemy::setDamage(int i)
 void Enemy::setMaxHealth(float i)
 {
     maxHealth = i;
+    health = maxHealth;
 }
 

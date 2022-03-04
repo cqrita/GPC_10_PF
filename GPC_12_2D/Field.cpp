@@ -10,7 +10,6 @@
 #include "Goblin.h"
 #include "FlyingEye.h"
 #include "GameEnd.h"
-#include "LevelManager.h"
 #include <string>
 void Field::Start()
 {
@@ -29,22 +28,29 @@ void Field::Start()
         auto countStr = std::to_string(enemyCount);
         UI.Text = countStr.c_str();
     }
-    {
-        stage = 1;
-    }
     std::srand(static_cast<unsigned int>(time(nullptr)));
     {
         entityManager = new EntityManager;
         user = new User;
-        player = new Player;
-        levelManager = new LevelManager;
+        player = new Player;        
         user->Start();
         entityManager->Start();
         player->Start();
         user->getPlayer(player);
         user->getEntityManager(entityManager);
         entityManager->addPlayer(player);
-        levelManager->setLevel(stage);
+    }
+    {
+        stage = 1;
+    }
+    {
+        stageText.Font.Name = "Font/arial";
+        stageText.Font.Size = 70;
+        stageText.Length = Vector<2>(200, 100) * 2;
+        stageText.Location = Vector<2>(camWidth + 20, camHeight - 50);
+        std::string countStr = "stage : ";
+        countStr.append(std::to_string(stage));
+        stageText.Text = countStr.c_str();
     }
     {
         battle.Name = "Sound/Battle";
@@ -55,31 +61,79 @@ void Field::Start()
     {
         stageDuration = stageConst;
     }
+    {
+        stageTextDuration = stageTextConst;
+        stageTextFlag = false;
+    }
 }
 
 Scene* Field::Update()
 {
     using namespace Engine;
+        
+    background.Render();
     
+    stageDuration -= Engine::Time::Get::Delta();
     
-    stageDuration -= Engine::Time::Get::Delta();   
     if (stageDuration < 0)
     {
         stageDuration = stageConst;
         stage++;
-        levelManager->setLevel(stage);
+        stageTextFlag = true;
     }
 
-    background.Render();
-    
-    levelManager->setEnemSize(enemies.size());
-    Enemy* enemy = levelManager->getEnemies();
-    if (enemy != nullptr)
+    if (stageTextFlag)
     {
-        entityManager->addEnemy(enemy);
-        enemy->Start();
+        stageTextDuration -= Engine::Time::Get::Delta();
     }
+    if (stageTextDuration < 0)
+    {
+        stageTextDuration = stageTextConst;
+        stageTextFlag = false;
+    }
+
+
     
+    if (enemies.size()<stage+1)
+    {
+        int x = rand() % (bkWidth*2)- bkWidth;
+        int y = rand() % (bkHeight*2)-bkHeight;
+        if (!((x > user->camera.Location[0] - camWidth && x < user->camera.Location[0] + camWidth) && (y > user->camera.Location[1] - camHeight && y < user->camera.Location[1] + camHeight)))
+        {
+            Vector<2> enemyLoc = Vector<2>(x, y);
+            int a = rand() % 3;
+            if (a == 0)
+            {
+                Mushroom* enemy = new Mushroom();
+                enemies.push_back(enemy);
+                entityManager->addEnemy(enemy);
+                enemy->Start();
+                enemy->setMaxHealth(50.0f + stage * 10);
+                enemy->setDamage(stage);
+                enemy->skin.Location = enemyLoc;
+            }
+            else if (a == 1)
+            {
+                FlyingEye* enemy = new FlyingEye();
+                enemies.push_back(enemy);
+                entityManager->addEnemy(enemy);
+                enemy->Start();
+                enemy->setMaxHealth(100.0f + stage * 10);
+                enemy->setDamage(stage * 2);
+                enemy->skin.Location = enemyLoc;
+            }
+            else
+            {
+                Goblin* enemy = new Goblin();
+                enemies.push_back(enemy);
+                entityManager->addEnemy(enemy);
+                enemy->Start();
+                enemy->setMaxHealth(30.0f + stage * 5);
+                enemy->setDamage(stage * 3);
+                enemy->skin.Location = enemyLoc;
+            }            
+        }        
+    }
     for (auto e = enemies.begin(); e != enemies.end() && !enemies.empty();)
     {
         if ((*e)->state == 1)
@@ -109,14 +163,20 @@ Scene* Field::Update()
         }
     }
 
-    levelManager->setItemSize(items.size());
-    Item* item = levelManager->getItems();
-    if (item != nullptr)
+    if (items.size() < 3)
     {
-        items.push_back(item);
-        entityManager->addItem(item);
+        int x = rand() % (bkWidth * 2) - bkWidth;
+        int y = rand() % (bkHeight * 2) - bkHeight;
+        if (!((x > user->camera.Location[0] - camWidth && x < user->camera.Location[0] + camWidth) && (y > user->camera.Location[1] - camHeight && y < user->camera.Location[1] + camHeight)))
+        {
+            Vector<2> itemLoc = Vector<2>(x, y);
+            Item* item = new Item();
+            items.push_back(item);
+            entityManager->addItem(item);
+            item->skin.Location = itemLoc;
+            item->Start();
+        }
     }
-    
     for (auto e = items.begin(); e != items.end() && !items.empty();)
     {
         if ((*e)->state > 0)
@@ -151,6 +211,14 @@ Scene* Field::Update()
         UI.Text = countStr.c_str();
         UI.Render();
     }
+    if (stageTextFlag)
+    {
+        std::string countStr = "stage : ";
+        countStr.append(std::to_string(stage));
+        stageText.Text = countStr.c_str();
+        stageText.Render();
+    }
+
     if (player->state == 0)
     {
         return new GameEnd(enemyCount);
@@ -163,7 +231,6 @@ void Field::End()
     battle.Stop();
     battle.End();
     entityManager->End();
-    delete levelManager;
     delete entityManager;
     user->End();
     delete user;

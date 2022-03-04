@@ -213,6 +213,7 @@ void Goblin::createMissile(float x, float y)
     GobSlash* missile = new GobSlash(angle, location, mouse);
     missiles.push_back(missile);
     missile->Start();
+    missile->getDamage(damage);
     attackSound.Play();
 }
 

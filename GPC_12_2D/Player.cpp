@@ -617,13 +617,14 @@ void Player::getItem(Item* item)
     if (item->itemValue == Item::ItemValue::Health)
     {
         this->item.Name = "Animation/Chest/Health";
-        if (this->health + item->itemNum < 100)
+        float perhealth = item->itemNum*0.01f*maxHealth;
+        if (this->health + perhealth < maxHealth)
         {
-            this->health += item->itemNum;
+            this->health += perhealth;
         }
         else
         {
-            this->health = 100;
+            this->health = maxHealth;
         }
     }
     else if (item->itemValue == Item::ItemValue::MissilePower)
@@ -647,5 +648,7 @@ void Player::lvlUp()
     {
         ++level;
         exp = 0;
+        maxHealth = maxHealth + 10;
+        health = maxHealth;
     }
 }

@@ -226,6 +226,6 @@ void FlyingEye::createMissile(float x, float y)
     FlySlash* missile = new FlySlash(angle, location, mouse);
     missiles.push_back(missile);
     missile->Start();
+    missile->getDamage(damage);
     attackSound.Play();
-
 }

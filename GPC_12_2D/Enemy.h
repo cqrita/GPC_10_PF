@@ -20,8 +20,8 @@ public:
     void move();
     void getCam(Vector<2> location);
     void createMissile(float x, float y);
-
-
+    void setDamage(int i);
+    void setMaxHealth(float i);
     ~Enemy() = default;
 public:
     std::vector<Missile*> missiles;
@@ -35,7 +35,7 @@ public:
     Engine::Sound::Effect::Component deathSound;
     Vector<2> cam;
     Vector<2> player;
-    int damage = 1;
+    int damage;
 
     Engine::Rendering::Text::Component healthText;
     enum class MoveState

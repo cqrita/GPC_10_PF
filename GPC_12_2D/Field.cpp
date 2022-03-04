@@ -4,11 +4,13 @@
 #include "Global.h"
 #include <cstdlib>
 #include "Engine/Input.h"
+#include "Engine/Time.h"
 #include "Player.h"
 #include "Mushroom.h"
 #include "Goblin.h"
 #include "FlyingEye.h"
 #include "GameEnd.h"
+#include "LevelManager.h"
 #include <string>
 void Field::Start()
 {
@@ -27,17 +29,22 @@ void Field::Start()
         auto countStr = std::to_string(enemyCount);
         UI.Text = countStr.c_str();
     }
+    {
+        stage = 1;
+    }
     std::srand(static_cast<unsigned int>(time(nullptr)));
     {
         entityManager = new EntityManager;
         user = new User;
-        player = new Player;        
+        player = new Player;
+        levelManager = new LevelManager;
         user->Start();
         entityManager->Start();
         player->Start();
         user->getPlayer(player);
         user->getEntityManager(entityManager);
         entityManager->addPlayer(player);
+        levelManager->setLevel(stage);
     }
     {
         battle.Name = "Sound/Battle";
@@ -45,49 +52,34 @@ void Field::Start()
         battle.Start();
         battle.Music();
     }
+    {
+        stageDuration = stageConst;
+    }
 }
 
 Scene* Field::Update()
 {
     using namespace Engine;
-        
+    
+    
+    stageDuration -= Engine::Time::Get::Delta();   
+    if (stageDuration < 0)
+    {
+        stageDuration = stageConst;
+        stage++;
+        levelManager->setLevel(stage);
+    }
+
     background.Render();
     
-    
-    if (enemies.size()<5)
+    levelManager->setEnemSize(enemies.size());
+    Enemy* enemy = levelManager->getEnemies();
+    if (enemy != nullptr)
     {
-        int x = rand() % (bkWidth*2)- bkWidth;
-        int y = rand() % (bkHeight*2)-bkHeight;
-        if (!((x > user->camera.Location[0] - camWidth && x < user->camera.Location[0] + camWidth) && (y > user->camera.Location[1] - camHeight && y < user->camera.Location[1] + camHeight)))
-        {
-            Vector<2> enemyLoc = Vector<2>(x, y);
-            int a = rand() % 3;
-            if (a == 0)
-            {
-                Mushroom* enemy = new Mushroom();
-                enemies.push_back(enemy);
-                entityManager->addEnemy(enemy);
-                enemy->Start();
-                enemy->skin.Location = enemyLoc;
-            }
-            else if (a == 1)
-            {
-                FlyingEye* enemy = new FlyingEye();
-                enemies.push_back(enemy);
-                entityManager->addEnemy(enemy);
-                enemy->Start();
-                enemy->skin.Location = enemyLoc;
-            }
-            else
-            {
-                Goblin* enemy = new Goblin();
-                enemies.push_back(enemy);
-                entityManager->addEnemy(enemy);
-                enemy->Start();
-                enemy->skin.Location = enemyLoc;
-            }            
-        }        
+        entityManager->addEnemy(enemy);
+        enemy->Start();
     }
+    
     for (auto e = enemies.begin(); e != enemies.end() && !enemies.empty();)
     {
         if ((*e)->state == 1)
@@ -117,20 +109,14 @@ Scene* Field::Update()
         }
     }
 
-    if (items.size() < 3)
+    levelManager->setItemSize(items.size());
+    Item* item = levelManager->getItems();
+    if (item != nullptr)
     {
-        int x = rand() % (bkWidth * 2) - bkWidth;
-        int y = rand() % (bkHeight * 2) - bkHeight;
-        if (!((x > user->camera.Location[0] - camWidth && x < user->camera.Location[0] + camWidth) && (y > user->camera.Location[1] - camHeight && y < user->camera.Location[1] + camHeight)))
-        {
-            Vector<2> itemLoc = Vector<2>(x, y);
-            Item* item = new Item();
-            items.push_back(item);
-            entityManager->addItem(item);
-            item->skin.Location = itemLoc;
-            item->Start();
-        }
+        items.push_back(item);
+        entityManager->addItem(item);
     }
+    
     for (auto e = items.begin(); e != items.end() && !items.empty();)
     {
         if ((*e)->state > 0)
@@ -177,6 +163,7 @@ void Field::End()
     battle.Stop();
     battle.End();
     entityManager->End();
+    delete levelManager;
     delete entityManager;
     user->End();
     delete user;

@@ -29,6 +29,9 @@ void Enemy::Start()
         health = maxHealth;
     }
     {
+        damage = 1;
+    }
+    {
         bar.Name = "Image/Bar";
         bar.Length = Vector<2>(60, 10);
         bar.Location[0] = skin.Location[0];
@@ -282,5 +285,15 @@ void Enemy::createMissile(float x, float y)
     Missile* missile = new Missile(angle, location, mouse);
     missiles.push_back(missile);
     missile->Start();
+}
+
+void Enemy::setDamage(int i)
+{
+    damage = i;
+}
+
+void Enemy::setMaxHealth(float i)
+{
+    maxHealth = i;
 }
 

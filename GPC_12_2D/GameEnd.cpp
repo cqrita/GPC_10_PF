@@ -3,6 +3,7 @@
 #include "Global.h"
 #include "Field.h"
 #include <string>
+#include <iostream>
 void GameEnd::Start()
 {
 	{
@@ -18,6 +19,7 @@ void GameEnd::Start()
 		auto countStr = std::string("score : ").append(std::to_string(score));
 		scoreText.Text = countStr.c_str();
 	}
+	
 	{
 		endText.Font.Name = "Font/arial";
 		endText.Font.Size = 40;
@@ -28,12 +30,31 @@ void GameEnd::Start()
 	start = new Button("Image/startIdle", 200, 50, camWidth, camHeight);
 	end = new Button("Image/quitIdle", 200, 50, camWidth, camHeight + 100);
 	buttonmanager = new ButtonManager();
-
+	scoreManager = new ScoreManager();
 	{
 		menu.Name = "Sound/Defeat";
 		menu.Volume = -1000;
 		menu.Start();
 		menu.Play();
+	}
+
+	{
+		arrayText.Font.Name = "Font/arial";
+		arrayText.Font.Size = 30;
+		arrayText.Length = Vector<2>(180, 180) * 2;
+		arrayText.Location = Vector<2>(camWidth-200 , camHeight - 80);
+		std::string arrayStr;
+		arrayStr.append("previous highscores : \n");
+		scores = scoreManager->getScore(score);
+		if (scores.size() != 0)
+		{
+			for (int num : scores)
+			{
+				arrayStr.append(std::to_string(num));
+				arrayStr.append("\n");
+			}
+		}
+		arrayText.Text = arrayStr.c_str();
 	}
 }
 
@@ -49,7 +70,21 @@ Scene* GameEnd::Update()
 		auto countStr = std::string("score : ").append(std::to_string(score));
 		scoreText.Text = countStr.c_str();
 		scoreText.Render();
-	}	
+	}
+	{
+		std::string arrayStr;
+		arrayStr.append("previous highscores : \n");
+		if (scores.size() != 0)
+		{
+			for (int num : scores)
+			{
+				arrayStr.append(std::to_string(num));
+				arrayStr.append("\n");
+			}
+		}
+		arrayText.Text = arrayStr.c_str();
+		arrayText.Render();
+	}
 	endText.Render();
 	if (buttonmanager->onClick(start))
 	{

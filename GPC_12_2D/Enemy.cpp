@@ -221,7 +221,6 @@ void Enemy::End()
 
 void Enemy::misCollide(Missile* missile)
 {
-    std::cout << "collided" << std::endl;
     
     if (health > 0)
     {

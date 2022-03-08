@@ -42,6 +42,7 @@
     <ClCompile Include="Pet.cpp" />
     <ClCompile Include="PetMissile.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="ScoreManager.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="Test2.cpp" />
     <ClCompile Include="User.cpp" />
@@ -88,6 +89,7 @@
     <ClInclude Include="PetMissile.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="ScoreManager.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="Test2.h" />
     <ClInclude Include="User.h" />

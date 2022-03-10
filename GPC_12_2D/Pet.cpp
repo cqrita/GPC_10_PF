@@ -8,7 +8,7 @@ void Pet::Start()
         skin.Duration = 0.25f;
         skin.Repeatable = true;
 
-        skin.Length = Vector<2>(50, 66);
+        skin.Length = Vector<2>(40, 55);
     }
     
     {

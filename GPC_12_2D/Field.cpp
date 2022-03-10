@@ -94,7 +94,7 @@ Scene* Field::Update()
 
 
     
-    if (enemies.size()<stage+1)
+    if (enemies.size()<stage+1.0f)
     {
         int x = rand() % (bkWidth*2)- bkWidth;
         int y = rand() % (bkHeight*2)-bkHeight;

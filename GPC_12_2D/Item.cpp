@@ -6,13 +6,13 @@ void Item::Start()
 {
     {
         skin.Name = "Animation/Chest/Chest";
-        skin.Duration = 0.25f;
+        skin.Duration = 0.5f;
         skin.Repeatable = true;
 
-        skin.Length = Vector<2>(10, 10) * 2;
+        skin.Length = Vector<2>(15, 15) * 2;
     }
     {
-        body.Length = Point(10 * 2, 10 * 2);
+        body.Length = Point(15 * 2, 15 * 2);
     }
     {
         state = 1;

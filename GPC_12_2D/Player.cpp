@@ -99,31 +99,47 @@ void Player::Start()
 
     {
         lvlbar.Name = "Image/lvlBar";
-        lvlbar.Length = Vector<2>(camWidth*2, 20);
+        lvlbar.Length = Vector<2>(camWidth*2, 30);
         lvlbar.Location[0] = cam[0];
         lvlbar.Location[1] = cam[1]+camHeight-30;
     }
     {
         lvlprogressBar.Name = "Image/lvlProgressBar";
         float exp = this->exp / (10 *100);
-        lvlprogressBar.Length = Vector<2>(camWidth*2 * exp, 20);
+        lvlprogressBar.Length = Vector<2>(camWidth*2 * exp, 25);
         lvlprogressBar.Location[0] = cam[0] + (camWidth * 2 * exp) / 2 - camWidth;
         lvlprogressBar.Location[1] = cam[1] + camHeight- 30;
     }
     {
         lvlbarBorder.Name = "Image/lvlProgressBarBorder";
-        lvlbar.Length = Vector<2>(camWidth * 2, 20);
+        lvlbar.Length = Vector<2>(camWidth * 2, 30);
         lvlbarBorder.Location[0] = cam[0];
         lvlbarBorder.Location[1] = cam[1] + camHeight- 30;
     }
+    {
+        lvlText.Name = "Image/exp";
+        lvlText.Length = Vector<2>(30, 30);
+        lvlText.Location[0] = cam[0];
+        lvlText.Location[1] = cam[1] + camHeight - 30;
+    }
 
-    levelImage.Font.Name = "Font/arial";
-    levelImage.Font.Size = 30;
-    levelImage.Length = Vector<2>(50, 50) * 2;
-    levelImage.Location[0] = camWidth*2-100;
-    levelImage.Location[1] = 100;
-    auto countStr = std::to_string(static_cast<int>(level));
-    levelImage.Text = countStr.c_str();
+
+    {
+        levelImage.Font.Name = "Font/arial";
+        levelImage.Font.Size = 30;
+        levelImage.Length = Vector<2>(100, 50) * 2;
+        levelImage.Location[0] = camWidth * 2 - 50;
+        levelImage.Location[1] = 100;
+        std::string countStr = "level : ";
+        countStr.append(std::to_string(static_cast<int>(level)));
+        levelImage.Text = countStr.c_str();
+    }
+    {
+        levelBackGround.Name = "Image/BarImage";
+        levelBackGround.Length = Vector<2>(400, 60);
+        levelBackGround.Location[0] = cam[0]+camWidth;
+        levelBackGround.Location[1] = cam[1] + camHeight - 70;
+    }
 
     {
         state = 1;
@@ -213,11 +229,8 @@ void Player::Update()
         auto healthString = std::to_string(health);
         healthText.Text = healthString.c_str();
     }
-    {
-        auto countStr = std::to_string(static_cast<int>(level));
-        levelImage.Text = countStr.c_str();
-        levelImage.Render();
-    }
+    
+    
     {
         skin.Render();
         muzzle.Render();
@@ -241,8 +254,7 @@ void Player::Update()
         barBorder.Render();
     }
 
-
-   
+    
 
     {
         if (itemState)
@@ -281,7 +293,7 @@ void Player::Update()
     }
     {
         float exp = this->exp / (level * 10);
-        lvlprogressBar.Length = Vector<2>(camWidth * 2 * exp, 20);
+        lvlprogressBar.Length = Vector<2>(camWidth * 2 * exp, 25);
         lvlprogressBar.Location[0] = cam[0] + (camWidth * 2 * exp) / 2 - camWidth;
         lvlprogressBar.Location[1] = cam[1] + camHeight - 30;
         lvlprogressBar.Render();
@@ -291,7 +303,22 @@ void Player::Update()
         lvlbarBorder.Location[1] = cam[1] + camHeight - 30;
         lvlbarBorder.Render();
     }
-
+    {
+        lvlText.Location[0] = cam[0];
+        lvlText.Location[1] = cam[1] + camHeight - 30;
+        lvlText.Render();
+    }
+    {
+        levelBackGround.Location[0] = cam[0] + camWidth;
+        levelBackGround.Location[1] = cam[1] + camHeight - 70;
+        levelBackGround.Render();
+    }
+    {
+        std::string countStr = "level : ";
+        countStr.append(std::to_string(static_cast<int>(level)));
+        levelImage.Text = countStr.c_str();
+        levelImage.Render();
+    }
 
 
 

@@ -48,6 +48,7 @@ public:
     Engine::Rendering::Animation::Component item;
     Engine::Rendering::Image::Component     box;
     Engine::Rendering::Text::Component levelImage;
+    Engine::Rendering::Image::Component levelBackGround;
     Engine::Sound::Effect::Component shoot;
     Engine::Sound::Effect::Component walk;
     Engine::Sound::Effect::Component pickUp;
@@ -83,7 +84,7 @@ private:
     Engine::Rendering::Image::Component lvlprogressBar;
     Engine::Rendering::Image::Component lvlbar;
     Engine::Rendering::Image::Component lvlbarBorder;
-
+    Engine::Rendering::Image::Component lvlText;
 
     float speed;
     float attackDuration;

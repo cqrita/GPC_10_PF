@@ -39,6 +39,7 @@ void Pet::Update()
     {
         attackDuration = attackSpeed;
         attack = false;
+        enemy = Vector<2>(5000, 5000);
     }
     {
         skin.Render();
@@ -113,8 +114,7 @@ void Pet::getEnemy(Vector<2> location)
 {
     if (Length(skin.Location - enemy) > Length(skin.Location - location))
     {
-        enemy = location;
-        
+        enemy = location;       
     }
     if (Length(skin.Location - enemy) < 400)
     {

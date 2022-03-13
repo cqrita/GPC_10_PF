@@ -64,10 +64,6 @@ void EntityManager::misCollision()
 						agent->misCollide(missile);
 						missile->duration = 1000;
 					}
-					if (agent->state == 1)
-					{
-						missile->getEnemy(Vector<2>(agent->body.Center.x, agent->body.Center.y));
-					}
 				}
 			}
 		}

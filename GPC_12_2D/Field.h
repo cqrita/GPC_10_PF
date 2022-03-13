@@ -23,6 +23,7 @@ private:
     std::vector<Enemy*> enemies;
     Engine::Rendering::Image::Component background;
     Engine::Rendering::Text::Component UI;
+    Engine::Rendering::Image::Component textBackground;
     Engine::Sound::Effect::Component battle;
     int enemyCount;
     User* user = nullptr;

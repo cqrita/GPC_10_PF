@@ -18,14 +18,16 @@ void Field::Start()
 
         background.Length = Vector<2>(bkWidth, bkHeight)*2;
     }
+    
     {
         enemyCount = 0;
         UI.Font.Name = "Font/arial";
         UI.Font.Size = 30;
-        UI.Length = Vector<2>(50, 50) * 2;
-        UI.Location[0] = 100;
+        UI.Length = Vector<2>(150, 50) * 2;
+        UI.Location[0] = 200;
         UI.Location[1] = 100;
-        auto countStr = std::to_string(enemyCount);
+        std::string countStr = "score : ";
+        countStr.append(std::to_string(enemyCount));
         UI.Text = countStr.c_str();
     }
     std::srand(static_cast<unsigned int>(time(nullptr)));
@@ -64,6 +66,12 @@ void Field::Start()
     {
         stageTextDuration = stageTextConst;
         stageTextFlag = false;
+    }
+    {
+        textBackground.Name = "Image/BarImage";
+        textBackground.Length = Vector<2>(500, 60);
+        textBackground.Location[0] = user->camera.Location[0] - camWidth;
+        textBackground.Location[1] = user->camera.Location[1] + camHeight - 70;
     }
 }
 
@@ -204,10 +212,17 @@ Scene* Field::Update()
     entityManager->Update();
     user->Update();
 
+
     {
-        UI.Location[0] = 100;
+        textBackground.Location[0] = user->camera.Location[0] - camWidth;
+        textBackground.Location[1] = user->camera.Location[1] + camHeight - 70;
+        textBackground.Render();
+    }
+    {
+        UI.Location[0] = 200;
         UI.Location[1] = 100;
-        auto countStr = std::to_string(enemyCount);
+        std::string countStr = "score : ";
+        countStr.append(std::to_string(enemyCount));
         UI.Text = countStr.c_str();
         UI.Render();
     }
